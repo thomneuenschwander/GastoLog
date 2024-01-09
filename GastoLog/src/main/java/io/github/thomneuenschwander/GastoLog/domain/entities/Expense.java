@@ -16,7 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_notebook")
+@Table(name = "tb_expense")
 public class Expense implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -31,8 +31,8 @@ public class Expense implements Serializable {
     private LocalDateTime moment;
 
     @ManyToOne
-    @JoinColumn(name = "notebook_id")
-    private Notebook notebook;
+    @JoinColumn(name = "user_id")
+    private User client;
 
     @ManyToMany
     @JoinTable(name = "tb_expense_category", joinColumns = @JoinColumn(name = "expense_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
@@ -41,12 +41,11 @@ public class Expense implements Serializable {
     public Expense(){
     }
 
-    public Expense(Long id, String description, Double price, LocalDateTime moment, Notebook notebook) {
+    public Expense(Long id, String description, Double price, LocalDateTime moment) {
         this.id = id;
         this.description = description;
         this.price = price;
         this.moment = moment;
-        this.notebook = notebook;
     }
 
     public Long getId() {
@@ -79,14 +78,6 @@ public class Expense implements Serializable {
 
     public void setMoment(LocalDateTime moment) {
         this.moment = moment;
-    }
-
-    public Notebook getNotebook() {
-        return notebook;
-    }
-
-    public void setNotebook(Notebook notebook) {
-        this.notebook = notebook;
     }
 
     public Set<Category> getCategories() {
