@@ -5,7 +5,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_expense")
+@EntityListeners(AuditingEntityListener.class)
 public class Expense implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -28,6 +33,7 @@ public class Expense implements Serializable {
 
     private Double price;
 
+    @CreatedDate
     private LocalDateTime moment;
 
     @ManyToOne
@@ -41,11 +47,12 @@ public class Expense implements Serializable {
     public Expense(){
     }
 
-    public Expense(Long id, String description, Double price, LocalDateTime moment) {
+    public Expense(Long id, String description, Double price, LocalDateTime moment, User client) {
         this.id = id;
         this.description = description;
         this.price = price;
         this.moment = moment;
+        this.client = client;
     }
 
     public Long getId() {
@@ -82,6 +89,14 @@ public class Expense implements Serializable {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    public User getClient() {
+        return client;
+    }
+
+    public void setClient(User client) {
+        this.client = client;
     }
 
     @Override

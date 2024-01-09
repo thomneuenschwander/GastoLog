@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ public class User implements Serializable {
     @Lob
     private byte[] imageProfile;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Expense> notebook = new ArrayList<>();
 
@@ -82,6 +85,10 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public List<Expense> getNotebook() {
+        return notebook;
     }
 
     @Override
