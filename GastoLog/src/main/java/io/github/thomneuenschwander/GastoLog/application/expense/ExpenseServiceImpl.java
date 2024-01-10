@@ -25,5 +25,14 @@ public class ExpenseServiceImpl implements ExpenseService{
         User user = userService.findById(id);
         return expenseRepository.findAllByClient(user);
     }
+
+    @Override
+    public Expense insert(Expense exp, Long id) throws Exception {
+        User user = userService.findById(id);
+        exp.setClient(user);
+        return expenseRepository.save(exp);
+    }
+
+    
     
 }
