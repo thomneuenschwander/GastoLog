@@ -25,14 +25,14 @@ public class ExpenseController {
     private ExpenseMapper mapper;
 
     @GetMapping("/u/{id}")
-    public ResponseEntity<List<ExpenseResponseDTO>> findAllByClient(@PathVariable Long id) throws Exception{
+    public ResponseEntity<List<ExpenseResDTO>> findAllByClient(@PathVariable Long id) throws Exception{
         var list = expenseService.findAllByClient(id);
         var dto = list.stream().map(exp -> mapper.expenseToResponseDTO(exp)).collect(Collectors.toList());
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping("/add/u/{id}")
-    public ResponseEntity<ExpenseResponseDTO> insert(@PathVariable Long id, @RequestBody ExpenseRequestDTO reqDTO) throws Exception {
+    public ResponseEntity<ExpenseResDTO> insert(@PathVariable Long id, @RequestBody ExpenseReqDTO reqDTO) throws Exception {
         var expense = mapper.mapToExpense(reqDTO);
         var res = expenseService.insert(expense, id, reqDTO.category());
         var dto = mapper.expenseToResponseDTO(res);
