@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import io.github.thomneuenschwander.GastoLog.application.user.UserServiceImpl;
 import io.github.thomneuenschwander.GastoLog.domain.entities.Expense;
 import io.github.thomneuenschwander.GastoLog.domain.entities.User;
+import io.github.thomneuenschwander.GastoLog.domain.services.CategoryService;
 import io.github.thomneuenschwander.GastoLog.domain.services.ExpenseService;
 import io.github.thomneuenschwander.GastoLog.repositories.ExpenseRepository;
 
@@ -20,6 +21,9 @@ public class ExpenseServiceImpl implements ExpenseService{
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @Override
     public List<Expense> findAllByClient(Long id) throws Exception {
         User user = userService.findById(id);
@@ -27,10 +31,12 @@ public class ExpenseServiceImpl implements ExpenseService{
     }
 
     @Override
-    public Expense insert(Expense exp, Long id) throws Exception {
-        User user = userService.findById(id);
-        exp.setClient(user);
-        return expenseRepository.save(exp);
+    public Expense insert(Expense expense, Long id, String categoryName) throws Exception {
+        var user = userService.findById(id);
+        var category = categoryService.findByName(categoryName);
+        expense.getCategories().add(category);
+        expense.setClient(user);
+        return expenseRepository.save(expense);
     }
 
     

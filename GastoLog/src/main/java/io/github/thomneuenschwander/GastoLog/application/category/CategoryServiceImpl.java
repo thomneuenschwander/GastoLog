@@ -19,5 +19,14 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
+
+    @Override
+    public Category findByName(String categoryName) {
+        var category = categoryRepository.findByName(categoryName);
+        if(category.isPresent()){
+            return category.get();
+        }
+        return null;
+    }
     
 }

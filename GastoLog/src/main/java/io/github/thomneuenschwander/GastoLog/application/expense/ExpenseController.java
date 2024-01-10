@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.thomneuenschwander.GastoLog.domain.entities.Expense;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,16 +25,18 @@ public class ExpenseController {
     private ExpenseMapper mapper;
 
     @GetMapping("/u/{id}")
-    public ResponseEntity<List<ExpenseDTO>> findAllByClient(@PathVariable Long id) throws Exception{
+    public ResponseEntity<List<ExpenseResponseDTO>> findAllByClient(@PathVariable Long id) throws Exception{
         var list = expenseService.findAllByClient(id);
-        var dto = list.stream().map(exp -> mapper.expenseToDTO(exp)).collect(Collectors.toList());
+        var dto = list.stream().map(exp -> mapper.expenseToResponseDTO(exp)).collect(Collectors.toList());
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping("/add/u/{id}")
-    public ResponseEntity<Expense> postMethodName(@PathVariable Long id, @RequestBody Expense exp) throws Exception {
-        var expense = expenseService.insert(exp, id);
-        return ResponseEntity.ok().body(expense);
+    public ResponseEntity<ExpenseResponseDTO> insert(@PathVariable Long id, @RequestBody ExpenseRequestDTO reqDTO) throws Exception {
+        var expense = mapper.mapToExpense(reqDTO);
+        var res = expenseService.insert(expense, id, reqDTO.category());
+        var dto = mapper.expenseToResponseDTO(res);
+        return ResponseEntity.ok().body(dto);
     }
     
 }
