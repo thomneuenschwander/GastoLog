@@ -1,12 +1,17 @@
 package io.github.thomneuenschwander.GastoLog.domain.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,18 +21,21 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_user")
+@EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable  {
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
     private String name;
     private String email;
     private String password;
     @Lob
     private byte[] imageProfile;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "client")
@@ -36,16 +44,14 @@ public class User implements Serializable  {
     public User(){
     }
 
-    public User(Long id, String username, String name, String email, String password,
-            byte[] imageProfile) {
+    public User(Long id, String name, String email, String password, byte[] imageProfile, LocalDateTime createdAt) {
         this.id = id;
-        this.username = username;
         this.name = name;
         this.email = email;
         this.password = password;
         this.imageProfile = imageProfile;
+        this.createdAt = createdAt;
     }
-
 
     public Long getId() {
         return id;
@@ -53,14 +59,6 @@ public class User implements Serializable  {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getName() {

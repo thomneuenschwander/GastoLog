@@ -27,9 +27,9 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         
-        User u1 = new User(null,"maria012", "Maria Brown", "maria@gmail.com", "123456", null);
-        User u2 = new User(null,"joaoMALUCO", "Joao keiloing", "keiloing@gmail.com", "joao123", null);
-        User u3 = new User(null,"cavaloVerde", "Marcos nuord", "Marcos@gmail.com", "123", null);
+        User u1 = new User(null, "Maria Brown", "maria@gmail.com", "123456", null, null);
+        User u2 = new User(null, "Joao keiloing", "keiloing@gmail.com", "joao123", null, null);
+        User u3 = new User(null, "Marcos nuord", "Marcos@gmail.com", "123", null, null);
 
         Expense e1 = new Expense(null, "desc1", 1.99, null, u3);
         Expense e2 = new Expense(null, "desc2", 10.80, null, u1);
