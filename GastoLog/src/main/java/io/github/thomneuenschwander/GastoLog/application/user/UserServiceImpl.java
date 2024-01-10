@@ -27,5 +27,7 @@ public class UserServiceImpl implements UserService {
         var userO = userRepository.findById(id);
         return userO.orElseThrow(() -> new ResourceNotFoundException(id));
     }
+
+    
     
 }
