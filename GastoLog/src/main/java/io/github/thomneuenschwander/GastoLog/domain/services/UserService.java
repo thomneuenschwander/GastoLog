@@ -7,6 +7,6 @@ import io.github.thomneuenschwander.GastoLog.domain.entities.User;
 public interface UserService {
 
     public List<User> findAll();
-    public User findById(Long id) throws Exception;
+    public User findById(Long id);
 
 }

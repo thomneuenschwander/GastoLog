@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) throws Exception {
+    public User findById(Long id) {
         var userO = userRepository.findById(id);
         return userO.orElseThrow(() -> new ResourceNotFoundException(id));
     }

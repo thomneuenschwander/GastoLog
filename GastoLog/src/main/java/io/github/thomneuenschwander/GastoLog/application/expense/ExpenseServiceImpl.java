@@ -3,11 +3,13 @@ package io.github.thomneuenschwander.GastoLog.application.expense;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import io.github.thomneuenschwander.GastoLog.application.user.UserServiceImpl;
 import io.github.thomneuenschwander.GastoLog.domain.entities.Expense;
 import io.github.thomneuenschwander.GastoLog.domain.entities.User;
+import io.github.thomneuenschwander.GastoLog.domain.exceptions.ResourceNotFoundException;
 import io.github.thomneuenschwander.GastoLog.domain.services.CategoryService;
 import io.github.thomneuenschwander.GastoLog.domain.services.ExpenseService;
 import io.github.thomneuenschwander.GastoLog.repositories.ExpenseRepository;
@@ -37,6 +39,15 @@ public class ExpenseServiceImpl implements ExpenseService{
         expense.getCategories().add(category);
         expense.setClient(user);
         return expenseRepository.save(expense);
+    }
+
+    @Override
+    public void delete(Long expId, Long userId) {
+        try {
+            expenseRepository.deleteById(expId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(expId);
+        }
     }
 
     
