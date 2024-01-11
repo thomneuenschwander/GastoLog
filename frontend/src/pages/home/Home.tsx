@@ -11,14 +11,18 @@ function App() {
     <Template>
       <main className="text-center">
         <h1 className="text-4xl text-indigo-800">Seja bem vindo <Highlight style="text-indigo-900">Fulano</Highlight> </h1>
-        <section className="flex">
-          <article>
+        <section className="flex gap-64">
+          <article className="basis-1/4">
             <ExpenseRegister />
           </article>
-          <div>
+          <div className="basis-1/2 flex flex-col gap-4">
+            <ExpenseCard price={37.90} description="ferro de passar roupa" />
+            <ExpenseCard price={37.90} description="ferro de passar roupa" />
+            <ExpenseCard price={37.90} description="ferro de passar roupa" />
+            <ExpenseCard price={37.90} description="ferro de passar roupa" />
             <ExpenseCard price={37.90} description="ferro de passar roupa" />
           </div>
-          <article>
+          <article className="basis-1/4">
             <Profile />
           </article>
         </section>

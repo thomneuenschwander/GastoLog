@@ -13,6 +13,7 @@ const InputText: React.FC<InputProps> = ({
    style,
    type = "text",
    onChange,
+   placeholder,
 }) => {
    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
       if (onChange) {
@@ -23,6 +24,7 @@ const InputText: React.FC<InputProps> = ({
    return (
       <input
          type={type}
+         placeholder={placeholder}
          className={`${style} border px-3 py-2 rounded-lg text-gray-900 outline-none`}
          onChange={handleChange}
       />

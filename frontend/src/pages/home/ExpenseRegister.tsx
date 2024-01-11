@@ -5,28 +5,22 @@ import InputText from "../../components/input/InputText"
 const ExpenseRegister = () => {
   return (
     <>
-        <h2>Anotar despesas</h2>
+        <h2 className="text-primary text-2xl font-medium pb-5">Anotar despesas</h2>
         <form className="space-y-2">
                <div>
                   <label className="block text-sm font-medium leading-6 text-gray-900">
-                     Name:{" "}
+                     Descrição:{" "}
                   </label>
-                  <InputText style="w-full" />
+                  <InputText style="w-full" placeholder="Gastou com o que ?" />
                </div>
 
                <div>
                   <label className="block text-sm font-medium leading-6 text-gray-900">
-                     Email:{" "}
+                     Valor:{" "}
                   </label>
-                  <InputText style="w-full" />
+                  <InputText style="w-full" placeholder="R$ 00.00" />
                </div>
 
-               <div>
-                  <label className="block text-sm font-medium leading-6 text-gray-900">
-                     Password:{" "}
-                  </label>
-                  <InputText style="w-full" />
-               </div>
                <Button style="w-full bg-primary" label="Entrar"/>
             </form>
     </>

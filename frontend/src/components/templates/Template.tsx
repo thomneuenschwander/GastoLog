@@ -9,7 +9,7 @@ const Template: React.FC<TemplateProps> = ({ children }: TemplateProps) => {
   return (
     <>
         <Header />
-          <div className="container mx-auto mt-8 px-4">
+          <div className="container mx-auto mt-8"> {/*container mx-auto mt-8 px-4*/}
             {children}
           </div>
         <Footer />
