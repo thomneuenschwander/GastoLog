@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import io.github.thomneuenschwander.GastoLog.application.jwt.JwtService;
+import io.github.thomneuenschwander.GastoLog.domain.AccessToken;
 import io.github.thomneuenschwander.GastoLog.domain.entities.User;
 import io.github.thomneuenschwander.GastoLog.domain.exceptions.DuplicatedTupleException;
 import io.github.thomneuenschwander.GastoLog.domain.exceptions.ResourceNotFoundException;
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtService jwtServices;
+
     @Override
     public List<User> findAll() {
         List<User> list = userRepository.findAll();
@@ -34,19 +39,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public User insert(User user) {
-        var possibleUser = userRepository.findByEmail(user.getEmail());
+        var possibleUser = findByEmail(user.getEmail());
         if(possibleUser != null){
             throw new DuplicatedTupleException("email", "user");
         }
         encondePassword(user);
         return userRepository.save(user);
     }
+    
     private void encondePassword(User user){
         String rawPassword = user.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encodedPassword);
     }
-    
+
+    @Override
+    public AccessToken authenticate(String email, String password) {
+        var user = findByEmail(email);
+        if(user == null){
+            return null;
+        }
+        boolean matches = passwordEncoder.matches(password, user.getPassword());
+        if(matches){
+            return jwtServices.generateToken(user);
+        }
+        return null;
+    }
+
     
 }
