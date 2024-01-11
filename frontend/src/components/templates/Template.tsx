@@ -7,13 +7,13 @@ interface TemplateProps {
 
 const Template: React.FC<TemplateProps> = ({ children }: TemplateProps) => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
         <Header />
-          <div className="container mx-auto mt-8"> {/*container mx-auto mt-8 px-4*/}
+          <div className="flex-grow container mx-auto mt-8 "> {/*container mx-auto mt-8 px-4*/}
             {children}
           </div>
         <Footer />
-    </>
+    </div>
   )
 }
 
