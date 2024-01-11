@@ -3,19 +3,12 @@ import InputText from "../../components/input/InputText"
 import Template from "../../components/templates/Template"
 import HighLight from "../../components/Highlight"
 
-const Register = () => {
-   return (
-      <Template>
-        <div className="flex flex-col items-center justify-center gap-5 max-w-2xl mx-auto mt-20 p-6 bg-white rounded-lg shadow-md">
-            <h1 className="font-medium text-2xl text-primary"><HighLight>Crie uma conta</HighLight> para anotar suas despesas</h1>
+const Login = () => {
+  return (
+    <Template>
+        <div className="flex flex-col items-center justify-center gap-5 max-w-2xl mx-auto mt-40 p-6 bg-white rounded-lg shadow-md">
+            <h1 className="font-medium text-2xl text-primary">Entrar na sua conta do <HighLight>GastoLog</HighLight></h1>
          <form action="" className="w-full flex flex-col gap-5">
-            <div>
-               <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Nome:{" "}
-               </label>
-               <InputText style="w-full" placeholder="seu nome" />
-
-            </div>
             <div>
                <label className="block text-sm font-medium leading-6 text-gray-900">
                   Email:{" "}
@@ -32,7 +25,7 @@ const Register = () => {
          </form>
       </div>
       </Template>
-   )
+  )
 }
 
-export default Register
+export default Login
