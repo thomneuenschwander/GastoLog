@@ -8,14 +8,13 @@ import org.springframework.stereotype.Service;
 
 import io.github.thomneuenschwander.GastoLog.application.user.UserServiceImpl;
 import io.github.thomneuenschwander.GastoLog.domain.entities.Expense;
-import io.github.thomneuenschwander.GastoLog.domain.entities.User;
 import io.github.thomneuenschwander.GastoLog.domain.exceptions.ResourceNotFoundException;
 import io.github.thomneuenschwander.GastoLog.domain.services.CategoryService;
 import io.github.thomneuenschwander.GastoLog.domain.services.ExpenseService;
 import io.github.thomneuenschwander.GastoLog.repositories.ExpenseRepository;
 
 @Service
-public class ExpenseServiceImpl implements ExpenseService{
+public class ExpenseServiceImpl implements ExpenseService {
 
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -27,14 +26,21 @@ public class ExpenseServiceImpl implements ExpenseService{
     private CategoryService categoryService;
 
     @Override
-    public List<Expense> findAllByClient(Long id) throws Exception {
-        User user = userService.findById(id);
+    public Expense findOneByClient(Long id, String email) {
+        var user = userService.findByEmail(email);
+        var expenseO = expenseRepository.findByIdAndClient(id, user);
+        return expenseO.orElseThrow(() -> new ResourceNotFoundException(email));
+    }
+
+    @Override
+    public List<Expense> findAllByClient(String email) throws Exception {
+        var user = userService.findByEmail(email);
         return expenseRepository.findAllByClient(user);
     }
 
     @Override
-    public Expense insert(Expense expense, Long id, String categoryName) throws Exception {
-        var user = userService.findById(id);
+    public Expense insert(Expense expense, String email, String categoryName) throws Exception {
+        var user = userService.findByEmail(email);
         var category = categoryService.findByName(categoryName);
         expense.getCategories().add(category);
         expense.setClient(user);
@@ -42,14 +48,29 @@ public class ExpenseServiceImpl implements ExpenseService{
     }
 
     @Override
-    public void delete(Long expId, Long userId) {
+    public Expense update(Expense exp, Long id, String email) {
+        var user = userService.findByEmail(email);
+        var expenseO = expenseRepository.findByIdAndClient(id, user);
+        if(!expenseO.isPresent()){
+            throw new ResourceNotFoundException(id);
+        }
+        updateData(expenseO.get(), exp);
+        return expenseRepository.save(expenseO.get());
+    }
+    private void updateData(Expense prevExp, Expense exp){
+        prevExp.setDescription(exp.getDescription());
+        prevExp.setPrice(exp.getPrice());
+    }
+
+    @Override
+    public void delete(Long id, String email) {
+        var user = userService.findByEmail(email);
         try {
-            expenseRepository.deleteById(expId);
+            expenseRepository.deleteByIdAndClient(id, user);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(expId);
+            throw new ResourceNotFoundException(id);
         }
     }
 
-    
-    
+
 }

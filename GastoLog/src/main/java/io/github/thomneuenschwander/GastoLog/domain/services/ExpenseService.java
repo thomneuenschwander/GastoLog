@@ -5,7 +5,9 @@ import java.util.List;
 import io.github.thomneuenschwander.GastoLog.domain.entities.Expense;
 
 public interface ExpenseService {
-    public List<Expense> findAllByClient(Long id) throws Exception;
-    public Expense insert(Expense exp, Long id, String categoryName) throws Exception;
-    public void delete (Long expId, Long userId);
+    public Expense findOneByClient(Long id, String email);
+    public List<Expense> findAllByClient(String email) throws Exception;
+    public Expense insert(Expense exp, String email, String categoryName) throws Exception;
+    public Expense update(Expense exp, Long id, String email);
+    public void delete (Long expId, String email) throws Exception;
 }
