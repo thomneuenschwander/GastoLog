@@ -7,7 +7,7 @@ import Button from "../../components/Button"
 import InputText from "../../components/input/InputText"
 import Template from "../../components/templates/Template"
 import HighLight from "../../components/Highlight"
-import { createAccount } from "../../context/auth/util"
+import { createAccount } from "../../context/auth/user.service"
 
 
 const Register = () => {

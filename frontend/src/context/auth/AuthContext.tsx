@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react"
 import { IContext, IAuthProvider, IUser, ICredentials } from "./types"
-import { getUserLocalStorage, setUserLocalStorage } from "./util"
-import { createSession } from "../../../services/Api"
+import { createSession, getUserLocalStorage, setUserLocalStorage } from "./user.service"
 
 export const AuthContext = createContext<IContext | undefined>(undefined)
 
