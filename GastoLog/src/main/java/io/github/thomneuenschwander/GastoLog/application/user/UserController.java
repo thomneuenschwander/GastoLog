@@ -39,9 +39,10 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<User> insert(@RequestBody RegisterDTO dto) {
+    public ResponseEntity<UserDTO> insert(@RequestBody RegisterDTO dto) {
         var mapped = userMapper.mapToUser(dto);
-        var res = userService.insert(mapped);
+        var user = userService.insert(mapped);
+        var res = userMapper.userToDTO(user, null);
         return ResponseEntity.ok().body(res);
     }
 
