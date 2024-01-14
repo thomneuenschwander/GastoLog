@@ -67,8 +67,6 @@ export function registerValidation(user: IRegister) {
    } else if (passwordError) {
       return passwordError
    }
-
-   return ""
 }
 
 export function loginValidation(credentials: ICredentials) {
@@ -82,6 +80,4 @@ export function loginValidation(credentials: ICredentials) {
    } else if (passwordError) {
       return passwordError
    }
-
-   return ""
 }

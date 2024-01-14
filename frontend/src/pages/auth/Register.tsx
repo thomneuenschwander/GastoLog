@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 import { IRegister } from "../../context/auth/types"
 
@@ -20,7 +20,6 @@ const Register = () => {
    const [error, setError] = useState<string>("")
 
    const auth = useAuth()
-   const navigate = useNavigate()
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -30,15 +29,12 @@ const Register = () => {
          password: password,
          confirmPassword: confirmPassword,
       }
-      const error: string = registerValidation(toPersist)
+      const error = registerValidation(toPersist)
       if(error){
          setError(error)
       }else{
          try {
-            auth?.register(toPersist)
-            if (auth?.token) {
-               navigate("/home")
-            }
+            await auth?.register(toPersist)
          } catch (error) {
             console.error(error)
          }

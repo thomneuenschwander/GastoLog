@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 import { useAuth } from "../../hooks/useAuth"
 import { ICredentials } from "../../context/auth/types"
@@ -17,7 +17,6 @@ const Login = () => {
    const [error, setError] = useState<string>("")
 
    const auth = useAuth()
-   const navigate = useNavigate()
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -26,15 +25,12 @@ const Login = () => {
          email: email,
          password: password,
       }
-      const error: string = loginValidation(toAuth)
+      const error = loginValidation(toAuth)
       if (error) {
          setError(error)
       } else {
          try {
             await auth?.authenticate(toAuth)
-            if (auth?.token) {
-               navigate("/home")
-            }
          } catch (error) {
             console.error(error)
          }
@@ -76,7 +72,7 @@ const Login = () => {
                         onChange={setPassword}
                      />
                   </div>
-                  <Button style="w-full bg-primary" label="Registrar" />
+                  <Button style="w-full bg-primary" label="Entrar" />
                   {error && <FieldError error="Email e senha invalidos!" />}
                </form>
             </div>
