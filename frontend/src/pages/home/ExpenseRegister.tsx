@@ -1,5 +1,5 @@
 import Button from "../../components/Button"
-import InputText from "../../components/input/InputText"
+import InputText from "../../components/input/Input"
 
 
 const ExpenseRegister = () => {

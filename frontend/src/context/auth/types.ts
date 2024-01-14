@@ -5,6 +5,7 @@ export interface IUser {
 
 export interface IContext extends IUser{
    authenticate: (credential: ICredentials) => Promise<void>
+   register: (user: IRegister) => Promise<void>
    logout: () => void
 }
 

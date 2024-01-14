@@ -1,11 +1,12 @@
 interface FieldErrorProps {
-    error: any | null;
+    error: any | null
+    style?: string
 }
 
-const FieldError: React.FC<FieldErrorProps> = ({error}) => {
+const FieldError: React.FC<FieldErrorProps> = ({error, style}) => {
     if(error){
         return (
-            <span className="text-red-500 text-sm">{error}</span>
+            <span className={`${style} text-red-500 text-sm`}>{error}</span>
         )
     }
     return null;

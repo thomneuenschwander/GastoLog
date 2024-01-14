@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react"
-import { IContext, IAuthProvider, IUser, ICredentials } from "./types"
-import { createSession, getUserLocalStorage, setUserLocalStorage } from "./user.service"
+import { IContext, IAuthProvider, IUser, ICredentials, IRegister } from "./types"
+import { createAccount, createSession, getUserLocalStorage, setUserLocalStorage } from "./user.service"
 
 export const AuthContext = createContext<IContext | undefined>(undefined)
 
@@ -23,6 +23,19 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
       setUser(payload)
       setUserLocalStorage(payload)
    }
+
+   async function register(user: IRegister) {
+
+
+      await createAccount(user)
+      
+      const toAuth: ICredentials = {
+         email: user.email,
+         password: user.password
+      }
+
+      authenticate(toAuth)
+   }
    
    function logout() {
       setUser(null)
@@ -30,7 +43,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
    }
 
    return (
-      <AuthContext.Provider value={{ ...user, authenticate, logout }}>
+      <AuthContext.Provider value={{ ...user, authenticate, register, logout }}>
          {children}
       </AuthContext.Provider>
    )

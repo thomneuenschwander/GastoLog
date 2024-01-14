@@ -1,33 +1,48 @@
 import { useState } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
 import { IRegister } from "../../context/auth/types"
 
 import Button from "../../components/Button"
-import InputText from "../../components/input/InputText"
+import InputText from "../../components/input/Input"
 import Template from "../../components/templates/Template"
 import HighLight from "../../components/Highlight"
-import { createAccount } from "../../context/auth/user.service"
+import { useAuth } from "../../hooks/useAuth"
+import FieldError from "../../components/input/FieldError"
+import { registerValidation } from "../../context/auth/validation"
 
 
 const Register = () => {
    const [name, setName] = useState<string>("")
    const [email, setEmail] = useState<string>("")
    const [password, setPassword] = useState<string>("")
+   const [confirmPassword, setConfirmPassword] = useState<string>("")
+   const [error, setError] = useState<string>("")
 
-   
+   const auth = useAuth()
+   const navigate = useNavigate()
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-
       const toPersist: IRegister = {
          name: name,
          email: email,
-         password: password
+         password: password,
+         confirmPassword: confirmPassword,
       }
-
-      const res = await createAccount(toPersist)
-      console.log(res)
+      const error: string = registerValidation(toPersist)
+      if(error){
+         setError(error)
+      }else{
+         try {
+            auth?.register(toPersist)
+            if (auth?.token) {
+               navigate("/home")
+            }
+         } catch (error) {
+            console.error(error)
+         }
+      }
    }
 
    return (
@@ -47,6 +62,7 @@ const Register = () => {
                         Nome:{" "}
                      </label>
                      <InputText
+                        type="text"
                         style="w-full"
                         placeholder="seu nome"
                         value={name}
@@ -58,6 +74,7 @@ const Register = () => {
                         Email:{" "}
                      </label>
                      <InputText
+                        type="text"
                         style="w-full"
                         placeholder="sua senha@gmail.com"
                         value={email}
@@ -69,6 +86,7 @@ const Register = () => {
                         Senha:{" "}
                      </label>
                      <InputText
+                        type="password"
                         style="w-full"
                         placeholder="senha"
                         value={password}
@@ -80,13 +98,15 @@ const Register = () => {
                         Confirmar senha:{" "}
                      </label>
                      <InputText
+                        type="password"
                         style="w-full"
                         placeholder="repita sua senha"
-                        value={password}
-                        onChange={setPassword}
+                        value={confirmPassword}
+                        onChange={setConfirmPassword}
                      />
                   </div>
                   <Button style="w-full bg-primary" label="Registrar" />
+                  {error && <FieldError error={error} style="font-medium underline" />}
                </form>
             </div>
             <NavLink to="/">

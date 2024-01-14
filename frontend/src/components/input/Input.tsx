@@ -11,7 +11,7 @@ interface InputProps {
 
 const InputText: React.FC<InputProps> = ({
    style,
-   type = "text",
+   type,
    onChange,
    placeholder,
 }) => {
