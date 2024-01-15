@@ -39,10 +39,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Expense insert(Expense expense, String email, String categoryName) throws Exception {
+    public Expense insert(Expense expense, String email, String[] categories) throws Exception {
+        for(String categoryName : categories){
+            var category = categoryService.findByName(categoryName);
+            expense.getCategories().add(category);
+        }
         var user = userService.findByEmail(email);
-        var category = categoryService.findByName(categoryName);
-        expense.getCategories().add(category);
         expense.setClient(user);
         return expenseRepository.save(expense);
     }

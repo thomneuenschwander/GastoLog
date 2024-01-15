@@ -46,7 +46,7 @@ public class ExpenseController {
     @PostMapping("/add")
     public ResponseEntity<ExpenseResDTO> insert(@RequestBody ExpenseReqDTO reqDTO, Principal auth) throws Exception {
         var expense = mapper.mapToExpense(reqDTO);
-        var res = expenseService.insert(expense, auth.getName(), reqDTO.category());
+        var res = expenseService.insert(expense, auth.getName(), reqDTO.categories());
         var dto = mapper.expenseToResponseDTO(res);
 
         return ResponseEntity.ok().body(dto);
