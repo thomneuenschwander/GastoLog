@@ -32,6 +32,7 @@ const Login = () => {
          try {
             await auth?.authenticate(toAuth)
          } catch (error) {
+            setError("Login inválido")
             console.error(error)
          }
       }

@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react"
 import { IContext, IAuthProvider, IUser, ICredentials, IRegister } from "./types"
-import { createAccount, createSession, getUserLocalStorage, setUserLocalStorage } from "./user.service"
+import { createAccount, createSession, getUserLocalStorage, setUserLocalStorage } from "../../resources/user/user.service"
 import { useNavigate } from "react-router-dom"
 
 export const AuthContext = createContext<IContext | undefined>(undefined)

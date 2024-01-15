@@ -1,5 +1,5 @@
-import { IRegister, ICredentials, IUser } from "./types"
-import { api } from "../../../services/Api"
+import { IRegister, ICredentials, IUser } from "../../context/auth/types"
+import { api } from "../api"
 
 export function setUserLocalStorage(user: IUser | null) {
    localStorage.setItem("user", JSON.stringify(user))
@@ -23,3 +23,4 @@ export async function createAccount(user: IRegister) {
 export const createSession = async (data: ICredentials) => {
    return api.post("user/auth/login", data)
 }
+
