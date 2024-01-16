@@ -5,9 +5,27 @@ import ExpenseRegister from "./ExpenseRegister"
 import Profile from "./Profile"
 import { useExpense } from "../../hooks/useExpense"
 import { Link } from "react-router-dom"
+import { useUserService } from "../../resources/user/user.service"
+import { useEffect, useState } from "react"
 
 function App() {
-  const expenseContext = useExpense();
+  const [user, setUser] = useState()
+  const expenseContext = useExpense()
+  const userService = useUserService()
+
+  useEffect(() => {
+      const fetchData = async () => {
+         
+      try {
+         const res = await userService.getProfile();
+         setUser(res);
+      } catch (error) {
+         console.error("Erro ao buscar o perfil do usuário:", error);
+      }
+   }
+   fetchData();
+}, []);
+
 
    return (
       <Template>

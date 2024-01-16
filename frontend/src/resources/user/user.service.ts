@@ -24,3 +24,22 @@ export const createSession = async (data: ICredentials) => {
    return api.post("user/auth/login", data)
 }
 
+class UserService {
+   baseURL: string = "/user"
+   static AUTH_PARAM: string = "_auth"
+
+   authenticateRequests() {
+      const user = getUserLocalStorage()
+      const acessToken = user.token
+      api.defaults.headers.common["Authorization"] = `Bearer ${acessToken}`
+   }
+   
+   async getProfile() {
+      this.authenticateRequests()
+      const res = await api.get(this.baseURL + "/profile")
+      return res.data
+   }
+
+}
+
+export const useUserService = () => new UserService()
