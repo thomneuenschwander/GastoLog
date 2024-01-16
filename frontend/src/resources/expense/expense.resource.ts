@@ -8,5 +8,10 @@ export interface Expense {
 export interface ExpenseReq {
    description: string
    price: number
-   category: string
+   categories?: string[]
+}
+
+export interface Category {
+   id?: number;
+   name?: string;
 }

@@ -2,8 +2,8 @@ import React, { ChangeEvent } from "react"
 
 interface InputEditProps {
     style?: string
-   value: string | number
-   onChange: (value: string) => void
+   value: string | number | string[]
+   onChange: (value: any) => void
    editMode: boolean
 }
 
@@ -17,7 +17,9 @@ const InputEdit: React.FC<InputEditProps> = ({style, value, onChange, editMode }
          type="text"
          value={editMode ? String(value) : String(value)}
          onChange={handleInputChange}
-         className={`${style} border-b border-gray-300 focus:outline-none focus:border-blue-500 w-full`}
+         className={`${style} border px-3 py-2 rounded-lg text-gray-900 outline-none ${
+            editMode ? "bg-gray-100" : "bg-gray-50"}`}
+         disabled={!editMode}
       />
    )
 }

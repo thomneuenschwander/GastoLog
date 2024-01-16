@@ -12,7 +12,7 @@ const ExpensePage: React.FC = () => {
    const [editedExpense, setEditedExpense] = useState<ExpenseReq>({
       description: "",
       price: 0,
-      category: "",
+      categories: [],
    })
 
    const { id } = useParams<{ id: string }>()
@@ -31,6 +31,7 @@ const ExpensePage: React.FC = () => {
       try {
          const res = await expenseService.deleteExpense(Number(id))
          console.log(res)
+         service?.loadExpenses()
       } catch (error) {
          console.error("Erro ao adicionar despesa:", error)
       }
@@ -87,8 +88,8 @@ const ExpensePage: React.FC = () => {
     <div className="mb-4">
       {editMode ? (
         <InputEdit
-          value={editedExpense.category}
-          onChange={(value) => handleInputChange("category", value)}
+          value={editedExpense.categories}
+          onChange={(value) => handleInputChange("categories", value)}
           editMode={editMode}
         />
       ) : (

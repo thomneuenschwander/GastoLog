@@ -25,6 +25,14 @@ class ExpenseService {
       api.defaults.headers.common["Authorization"] = `Bearer ${acessToken}`
       return await api.delete(this.baseURL+`/delete/${expenseId}`)
    }
+
+   async getAllCategories() {
+      const user = getUserLocalStorage()
+      const acessToken = user.token
+      api.defaults.headers.common["Authorization"] = `Bearer ${acessToken}`
+      const res = await api.get("/category")
+      return res.data
+   }
 }
 
 export const useExpenseService = () => new ExpenseService()

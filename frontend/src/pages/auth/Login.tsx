@@ -54,9 +54,9 @@ const Login = () => {
                         Email:{" "}
                      </label>
                      <InputText
-                        type="text"
+                        type="email"
                         style="w-full"
-                        placeholder="sua senha@gmail.com"
+                        placeholder="seu email@gmail.com"
                         value={email}
                         onChange={setEmail}
                      />
