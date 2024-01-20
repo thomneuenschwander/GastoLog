@@ -19,14 +19,12 @@ function App() {
       try {
          const res = await userService.getProfile();
          setUser(res);
-      } catch (error) {
-         console.error("Erro ao buscar o perfil do usuário:", error);
-      }
+      } catch (error) { /* empty */ }
    }
    fetchData();
 }, []);
 
-
+   
    return (
       <Template>
          <main className="text-center">

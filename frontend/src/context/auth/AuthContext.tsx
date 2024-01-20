@@ -1,54 +1,52 @@
 import { createContext, useEffect, useState } from "react"
-import { IContext, IAuthProvider, IUser, ICredentials, IRegister } from "./types"
-import { createAccount, createSession, getUserLocalStorage, setUserLocalStorage } from "../../resources/user/user.service"
+import { IContext, IAuthProvider } from "./types"
 import { useNavigate } from "react-router-dom"
+import {
+   Credentials,
+   RegisterData,
+   UserSessionToken,
+} from "../../resources/user/user.resource"
+import { useAuthService } from "../../resources/user/authentication.service"
 
 export const AuthContext = createContext<IContext | undefined>(undefined)
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
-   const [user, setUser] = useState<IUser | null>()
+   const [user, setUser] = useState<UserSessionToken | null>()
+   const [isAuthenticate, setIsAuthenticate] = useState<boolean>(false)
+
+   const authService = useAuthService()
 
    const navigate = useNavigate()
 
    useEffect(() => {
-      const user = getUserLocalStorage()
+      authService.isSessionValid()
+         ? setIsAuthenticate(true)
+         : setIsAuthenticate(false)
+   })
 
-      if (user) {
-         setUser(user)
-      }
-   }, [])
-
-   async function authenticate(credentials: ICredentials) {
-      const res = await createSession(credentials)
-
-      const payload = { token: res.data.accessToken, email: credentials.email }
-
-      setUser(payload)
-      setUserLocalStorage(payload)
-      navigate('/home');
+   async function authenticate(credentials: Credentials) {
+      const userSessionToken = await authService.initSession(credentials)
+      setUser(userSessionToken)
+      setIsAuthenticate(true)
+      navigate("/home")
    }
 
-   async function register(user: IRegister) {
-
-
-      await createAccount(user)
-      
-      const toAuth: ICredentials = {
-         email: user.email,
-         password: user.password
-      }
-
-      await authenticate(toAuth)
+   async function register(userData: RegisterData) {
+      await authService.save(userData)
+      await authenticate(userData)
    }
-   
+
    function logout() {
+      setIsAuthenticate(false)
       setUser(null)
-      setUserLocalStorage(null)
-      navigate('/');
+      authService.invalidateSession()
+      navigate("/")
    }
 
    return (
-      <AuthContext.Provider value={{ ...user, authenticate, register, logout }}>
+      <AuthContext.Provider
+         value={{ ...user, authenticate, register, logout, isAuthenticate }}
+      >
          {children}
       </AuthContext.Provider>
    )

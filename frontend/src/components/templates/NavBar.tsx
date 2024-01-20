@@ -7,7 +7,7 @@ const NavBar: React.FC = () => {
    const auth = useAuth()
    return (
       <nav>
-         {!auth?.token ? (
+         {!auth?.isAuthenticate ? (
             <ul className="flex text-2xl gap-20 py-3">
                <li>About</li>
                <li>

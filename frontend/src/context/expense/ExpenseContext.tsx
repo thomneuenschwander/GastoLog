@@ -14,7 +14,7 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 
    const loadExpenses = async () => {
       try {
-         if (auth?.token) {
+         if (auth?.isAuthenticate) {
             const res = await expenseService.getAllExpenses()
             console.log(res)
             setExpenses(res)
@@ -30,7 +30,7 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 
    const loadCategories = async () => {
       try {
-         if (auth?.token) {
+         if (auth?.isAuthenticate) {
             const res = await expenseService.getAllCategories()
             console.log(res)
             setAvailableCategories(res)
@@ -42,10 +42,13 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 
    useEffect(() => {
       loadCategories()
-   }, [auth])
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [auth?.isAuthenticate])
+   
    useEffect(() => {
       loadExpenses()
-   }, [auth])
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
 
    const contextValue: IExpenseContext = {
       expenses,

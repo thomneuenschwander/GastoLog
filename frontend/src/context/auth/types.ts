@@ -1,12 +1,12 @@
-export interface IUser {
-   email?: string
-   token?: string
-}
+import { UserSessionToken } from "../../resources/user/user.resource"
 
-export interface IContext extends IUser {
+
+
+export interface IContext extends UserSessionToken {
    authenticate: (credential: ICredentials) => Promise<void>
    register: (user: IRegister) => Promise<void>
    logout: () => void
+   isAuthenticate: boolean
 }
 
 export interface IAuthProvider {

@@ -1,19 +1,21 @@
 export class Credentials {
-    email?: string;
-    password?: string;
+    email?: string
+    password?: string
 }
 
-export class Register extends Credentials{
+export class RegisterData extends Credentials{
     name?: string;
     confirmPassword?: string
 }
 
 export class AccessToken {
-    accessToken?: string;
+    accessToken?: string
 }
 
 export class UserSessionToken {
-    email?: string;
-    accessToken?: string;
-    expiration?: number;
+    name?: string
+    email?: string
+    url?: string
+    accessToken?: string
+    expiration?: number
 }

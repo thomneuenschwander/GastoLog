@@ -1,12 +1,7 @@
-import { IRegister, ICredentials, IUser } from "../../context/auth/types"
 import { api } from "../api"
 
-export function setUserLocalStorage(user: IUser | null) {
-   localStorage.setItem("user", JSON.stringify(user))
-}
-
 export function getUserLocalStorage() {
-   const json = localStorage.getItem("user")
+   const json = localStorage.getItem("_auth")
    if (!json) {
       return null
    }
@@ -15,29 +10,26 @@ export function getUserLocalStorage() {
    return user ?? null
 }
 
-export async function createAccount(user: IRegister) {
-   const res = await api.post("user/auth/register", user)
-   return res.data
-}
-
-export const createSession = async (data: ICredentials) => {
-   return api.post("user/auth/login", data)
-}
-
 class UserService {
    baseURL: string = "/user"
-   static AUTH_PARAM: string = "_auth"
 
    authenticateRequests() {
-      const user = getUserLocalStorage()
-      const acessToken = user.token
-      api.defaults.headers.common["Authorization"] = `Bearer ${acessToken}`
+      const user = getUserLocalStorage();
+      if (!user || !user.accessToken) {
+         throw new Error("Token de acesso ausente ou inválido");
+      }
+      api.defaults.headers.common["Authorization"] = `Bearer ${user.accessToken}`;
    }
-   
+
    async getProfile() {
-      this.authenticateRequests()
-      const res = await api.get(this.baseURL + "/profile")
-      return res.data
+      try {
+         this.authenticateRequests();
+         const res = await api.get(this.baseURL + "/profile");
+         return res.data;
+      } catch (error) {
+         console.error("Erro ao obter perfil:", error);
+         throw error;
+      }
    }
 
 }

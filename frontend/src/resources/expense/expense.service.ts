@@ -5,10 +5,12 @@ import { Expense, ExpenseReq } from "./expense.resource"
 class ExpenseService {
    baseURL: string = "/expense"
 
-   authenticateRequests(){
-      const user = getUserLocalStorage()
-      const acessToken = user.token
-      api.defaults.headers.common["Authorization"] = `Bearer ${acessToken}`
+   authenticateRequests() {
+      const user = getUserLocalStorage();
+      if (!user || !user.accessToken) {
+         throw new Error("Token de acesso ausente ou inválido");
+      }
+      api.defaults.headers.common["Authorization"] = `Bearer ${user.accessToken}`;
    }
 
    async getAllExpenses(): Promise<Expense[]> {
