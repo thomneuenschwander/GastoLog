@@ -2,7 +2,7 @@ import React, { ChangeEvent } from "react"
 
 interface InputEditProps {
     style?: string
-   value: string | number | string[]
+   value: string | number | string[] | undefined
    onChange: (value: any) => void
    editMode: boolean
 }

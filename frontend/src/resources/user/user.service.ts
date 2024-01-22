@@ -21,10 +21,10 @@ class UserService {
       api.defaults.headers.common["Authorization"] = `Bearer ${user.accessToken}`;
    }
 
-   async getProfile() {
+   async getImageProfile(url: string) {
       try {
          this.authenticateRequests();
-         const res = await api.get(this.baseURL + "/profile");
+         const res = await api.get(url);
          return res.data;
       } catch (error) {
          console.error("Erro ao obter perfil:", error);

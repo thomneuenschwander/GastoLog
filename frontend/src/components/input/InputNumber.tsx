@@ -25,7 +25,7 @@ interface InputNumberProps {
       <input
         type="number"
         placeholder={placeholder}
-        className={`${style} border px-3 py-2 rounded-lg text-gray-900 outline-none`}
+        className={`${style} border px-3 py-2 rounded-lg text-gray-900 outline-none [&::-webkit-inner-spin-button]:appearance-none`}
         onChange={handleChange}
         value={value === undefined ? "" : value}
       />

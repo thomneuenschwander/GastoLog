@@ -27,7 +27,10 @@ class ExpenseService {
       this.authenticateRequests()
       return await api.delete(this.baseURL+`/delete/${expenseId}`)
    }
-
+   async updateExpense(expenseData: any) {
+      this.authenticateRequests()
+      return await api.put(this.baseURL+"/update", expenseData)
+   }
    async getAllCategories() {
       this.authenticateRequests()
       const res = await api.get("/category")

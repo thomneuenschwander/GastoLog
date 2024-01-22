@@ -42,13 +42,8 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 
    useEffect(() => {
       loadCategories()
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [auth?.isAuthenticate])
-   
-   useEffect(() => {
       loadExpenses()
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
+   }, [auth?.isAuthenticate])
 
    const contextValue: IExpenseContext = {
       expenses,

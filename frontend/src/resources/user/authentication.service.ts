@@ -36,6 +36,7 @@ class AuthService {
          accessToken: token.accessToken,
          email: decodedToken.sub,
          expiration: decodedToken.exp,
+         name: decodedToken.name,
       }
       return userSessionToken;
    }

@@ -32,7 +32,7 @@ const ExpenseRegister = () => {
 
          console.log(res)
       } catch (error) {
-         console.error("Erro ao adicionar despesa:", error)
+         console.error("Couldnt add exoense:", error)
       }
    }
 
@@ -41,21 +41,21 @@ const ExpenseRegister = () => {
          <h2 className="text-primary text-2xl font-medium pb-5">
             Anotar despesas
          </h2>
-         <form onSubmit={handleSubmit} className="space-y-3">
-            <div>
+         <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="mb-4">
                <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Descrição:{" "}
+                  Descrição:
                </label>
                <InputText
                   style="w-full"
-                  placeholder="Gastou com o que ?"
+                  placeholder="Gastou com o que?"
                   value={description}
                   onChange={(value) => setDescription(value)}
                />
             </div>
-            <div>
+            <div className="mb-4">
                <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Valor:{" "}
+                  Valor:
                </label>
                <InputNumber
                   style="w-full"
@@ -64,7 +64,7 @@ const ExpenseRegister = () => {
                   onChange={(value) => setPrice(value)}
                />
             </div>
-            <div>
+            <div className="mb-4">
                <label className="block text-sm font-medium leading-6 text-gray-900">
                   Selecione categorias
                </label>
@@ -73,7 +73,11 @@ const ExpenseRegister = () => {
                   onCategoriesChange={setCategories}
                />
             </div>
-            <Button style="w-full bg-primary" label="anotar" type="submit" />
+            <Button
+               style="w-3/4 bg-primary xl:w-full lg:w-full "
+               label="Anotar"
+               type="submit"
+            />
          </form>
       </>
    )
