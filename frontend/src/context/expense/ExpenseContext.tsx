@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Category, Expense } from "../../resources/expense/expense.resource"
 import { createContext, useEffect, useState } from "react"
 import { useExpenseService } from "../../resources/expense/expense.service"
@@ -14,13 +15,10 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 
    const loadExpenses = async () => {
       try {
-         if (auth?.isAuthenticate) {
-            const res = await expenseService.getAllExpenses()
-            console.log(res)
-            setExpenses(res)
-         }
+         const res = await expenseService.getAllExpenses()
+         setExpenses(res)
       } catch (error) {
-         console.error("Erro ao carregar despesas:", error)
+         console.error("Expense Error", error)
       }
    }
 
@@ -30,19 +28,18 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 
    const loadCategories = async () => {
       try {
-         if (auth?.isAuthenticate) {
-            const res = await expenseService.getAllCategories()
-            console.log(res)
-            setAvailableCategories(res)
-         }
+         const res = await expenseService.getAllCategories()
+         setAvailableCategories(res)
       } catch (error) {
-         console.error("Erro ao carregar categorias:", error)
+         console.error("Category error:", error)
       }
    }
 
    useEffect(() => {
-      loadCategories()
-      loadExpenses()
+      if(auth?.isAuthenticate){
+         loadCategories()
+         loadExpenses()
+      }
    }, [auth?.isAuthenticate])
 
    const contextValue: IExpenseContext = {

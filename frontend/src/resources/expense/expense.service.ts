@@ -23,13 +23,13 @@ class ExpenseService {
       this.authenticateRequests()
       return await api.post(this.baseURL+"/add", data)
    }
-   async deleteExpense(expenseId: number) {
+   async deleteExpense(id: number) {
       this.authenticateRequests()
-      return await api.delete(this.baseURL+`/delete/${expenseId}`)
+      return await api.delete(this.baseURL+`/delete/${id}`)
    }
-   async updateExpense(expenseData: any) {
+   async updateExpense(expenseData: ExpenseReq, expenseId: number) {
       this.authenticateRequests()
-      return await api.put(this.baseURL+"/update", expenseData)
+      return await api.put(this.baseURL+`/update/${expenseId}`, expenseData)
    }
    async getAllCategories() {
       this.authenticateRequests()

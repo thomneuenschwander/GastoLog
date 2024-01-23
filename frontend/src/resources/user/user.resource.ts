@@ -15,7 +15,6 @@ export class AccessToken {
 export class UserSessionToken {
     name?: string
     email?: string
-    url?: string
     accessToken?: string
     expiration?: number
 }

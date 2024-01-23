@@ -4,11 +4,12 @@ import { Category } from '../../resources/expense/expense.resource';
 interface CategorySelectorProps {
   availableCategories: Category[] | null | undefined
   onCategoriesChange: (categories: string[]) => void
+  style?: string
 }
 
-const CategorySelector: React.FC<CategorySelectorProps> = ({ availableCategories, onCategoriesChange }) => {
+const CategorySelector: React.FC<CategorySelectorProps> = ({ availableCategories, onCategoriesChange, style }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [newCategory, setNewCategory] = useState<string>('');
+  const [newCategory, setNewCategory] = useState<string>("");
 
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setNewCategory(event.target.value);
@@ -16,7 +17,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ availableCategories
 
   const handleAddCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    if (newCategory.trim() !== '' && !selectedCategories.includes(newCategory)) {
+    if (newCategory.trim() !== "" && !selectedCategories.includes(newCategory)) {
       setSelectedCategories([...selectedCategories, newCategory]);
       setNewCategory('');
     }
@@ -37,7 +38,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ availableCategories
         <select
           onChange={handleCategoryChange}
           value={newCategory}
-          className="border px-3 py-2 rounded-l-md focus:outline-none focus:border-blue-500"
+          className={`border px-3 py-2 rounded-l-md focus:outline-none focus:border-blue-500 ${style}`}
         >
           <option value="" disabled>Select a category</option>
           {availableCategories && availableCategories.map((category) => (
