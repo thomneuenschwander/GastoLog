@@ -55,7 +55,7 @@ public class ExpenseController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ExpenseResDTO> putMethodName(@PathVariable Long id, @RequestBody ExpenseReqDTO reqDTO, Principal auth) {
         var expense = mapper.mapToExpense(reqDTO);
-        var res = expenseService.update(expense, id, auth.getName());
+        var res = expenseService.update(expense, id, auth.getName(), reqDTO.categories());
         var dto = mapper.expenseToResponseDTO(res);
         return ResponseEntity.ok().body(dto);
     }

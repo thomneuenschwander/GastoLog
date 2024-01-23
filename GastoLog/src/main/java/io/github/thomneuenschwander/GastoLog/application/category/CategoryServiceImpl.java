@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.thomneuenschwander.GastoLog.domain.entities.Category;
+import io.github.thomneuenschwander.GastoLog.domain.exceptions.CategoryNotFoundException;
 import io.github.thomneuenschwander.GastoLog.domain.services.CategoryService;
 import io.github.thomneuenschwander.GastoLog.repositories.CategoryRepository;
 
@@ -22,11 +23,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findByName(String categoryName) {
-        var category = categoryRepository.findByName(categoryName);
-        if(category.isPresent()){
-            return category.get();
-        }
-        return null;
+        var categoryO = categoryRepository.findByName(categoryName);
+        return categoryO.orElseThrow(() -> new CategoryNotFoundException(categoryName));
     }
     
 }

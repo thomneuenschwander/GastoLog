@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import io.github.thomneuenschwander.GastoLog.domain.exceptions.CategoryNotFoundException;
 import io.github.thomneuenschwander.GastoLog.domain.exceptions.DuplicatedTupleException;
 import io.github.thomneuenschwander.GastoLog.domain.exceptions.ImageFormatNotSupportedException;
 import io.github.thomneuenschwander.GastoLog.domain.exceptions.ResourceNotFoundException;
@@ -32,6 +33,13 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> ImageFormatNotSupported(ImageFormatNotSupportedException e, HttpServletRequest request) {
 		String error = "Image format not supported";
 		HttpStatus status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	@ExceptionHandler(CategoryNotFoundException.class)
+	public ResponseEntity<StandardError> categoryNotFound(CategoryNotFoundException e, HttpServletRequest request) {
+		String error = "Category resource not found";
+		HttpStatus status = HttpStatus.NOT_FOUND;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}

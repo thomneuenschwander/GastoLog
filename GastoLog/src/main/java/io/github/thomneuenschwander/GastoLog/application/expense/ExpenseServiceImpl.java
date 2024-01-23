@@ -40,30 +40,36 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense insert(Expense expense, String email, String[] categories) throws Exception {
-        if(categories != null){
-            for(String categoryName : categories){
-                var category = categoryService.findByName(categoryName);
-                expense.getCategories().add(category);
-            }
-        }
+        addCategories(expense, categories);
         var user = userService.findByEmail(email);
         expense.setClient(user);
         return expenseRepository.save(expense);
     }
+    private void addCategories(Expense expense, String[] categories){
+        if (categories != null) {
+            for (String categoryName : categories) {
+                var category = categoryService.findByName(categoryName);
+                expense.getCategories().add(category);
+            }
+        }
+    }
 
     @Override
-    public Expense update(Expense exp, Long id, String email) {
+    public Expense update(Expense exp, Long id, String email, String[] categories) {
         var user = userService.findByEmail(email);
         var expenseO = expenseRepository.findByIdAndClient(id, user);
-        if(!expenseO.isPresent()){
+        if (!expenseO.isPresent()) {
             throw new ResourceNotFoundException(id);
         }
-        updateData(expenseO.get(), exp);
+        updateData(expenseO.get(), exp, categories);
         return expenseRepository.save(expenseO.get());
     }
-    private void updateData(Expense prevExp, Expense exp){
+
+    private void updateData(Expense prevExp, Expense exp, String[] newCategories) {
         prevExp.setDescription(exp.getDescription());
         prevExp.setPrice(exp.getPrice());
+        prevExp.getCategories().clear();
+        addCategories(prevExp, newCategories);
     }
 
     @Override
@@ -75,6 +81,5 @@ public class ExpenseServiceImpl implements ExpenseService {
             throw new ResourceNotFoundException(id);
         }
     }
-
 
 }
