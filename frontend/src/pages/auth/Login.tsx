@@ -59,6 +59,7 @@ const Login = () => {
                         placeholder="seu email@gmail.com"
                         value={email}
                         onChange={setEmail}
+                        autocomplete="username"
                      />
                   </div>
                   <div>
@@ -71,6 +72,7 @@ const Login = () => {
                         placeholder="senha"
                         value={password}
                         onChange={setPassword}
+                        autocomplete="current-password"
                      />
                   </div>
                   <Button style="w-full bg-primary" label="Entrar" />

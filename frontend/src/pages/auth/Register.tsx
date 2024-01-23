@@ -75,6 +75,7 @@ const Register = () => {
                         placeholder="sua senha@gmail.com"
                         value={email}
                         onChange={setEmail}
+                        autocomplete="username"
                      />
                   </div>
                   <div>
@@ -87,6 +88,7 @@ const Register = () => {
                         placeholder="senha"
                         value={password}
                         onChange={setPassword}
+                        autocomplete="new-password"
                      />
                   </div>
                   <div>
@@ -99,6 +101,7 @@ const Register = () => {
                         placeholder="repita sua senha"
                         value={confirmPassword}
                         onChange={setConfirmPassword}
+                        autocomplete="new-password"
                      />
                   </div>
                   <Button style="w-full bg-primary" label="Registrar" />
