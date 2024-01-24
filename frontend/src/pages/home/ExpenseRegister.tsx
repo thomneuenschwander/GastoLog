@@ -1,38 +1,26 @@
-import { useState } from "react"
 import Button from "../../components/Button"
 import InputText from "../../components/input/Input"
-
-import { useExpenseService } from "../../resources/expense/expense.service"
 import InputNumber from "../../components/input/InputNumber"
-import { ExpenseReq } from "../../resources/expense/expense.resource"
-import { useExpense } from "../../hooks/useExpense"
 import CategorySelector from "../../components/expense/CategorySelector"
 
+import { useExpenseService } from "../../resources/expense/expense.service"
+import { useExpenseContext } from "../../hooks/useExpenseContext"
+import useExpense from "../../hooks/useExpense"
+
 const ExpenseRegister = () => {
-   const [description, setDescription] = useState<string>("")
-   const [price, setPrice] = useState<number>(0.0)
-   const [categories, setCategories] = useState<string[]>()
 
    const expenseService = useExpenseService()
-   const context = useExpense()
+   const context = useExpenseContext()
+   const {handleInputChange, expense} = useExpense()
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      const toPersist: ExpenseReq = {
-         description: description,
-         price: price,
-         categories: categories,
-      }
       try {
-         const res = await expenseService.addExpense(toPersist)
+         const res = await expenseService.addExpense(expense)
          context?.loadExpenses()
-
-         setDescription("")
-         setPrice(0.0)
-
          console.log(res)
       } catch (error) {
-         console.error("Couldnt add exoense:", error)
+         console.error("Couldnt add expense:", error)
       }
    }
 
@@ -49,8 +37,8 @@ const ExpenseRegister = () => {
                <InputText
                   style="w-full"
                   placeholder="Gastou com o que?"
-                  value={description}
-                  onChange={(value) => setDescription(value)}
+                  value={expense.description}
+                  onChange={(value) => handleInputChange("description",value)}
                />
             </div>
             <div className="mb-4">
@@ -59,9 +47,9 @@ const ExpenseRegister = () => {
                </label>
                <InputNumber
                   style="w-full"
-                  placeholder="R$ 00.00"
-                  value={price}
-                  onChange={(value) => setPrice(value)}
+                  placeholder="0.00"
+                  value={expense.price}
+                  onChange={(value) => handleInputChange("price",value)}
                />
             </div>
             <div className="mb-4">
@@ -70,7 +58,7 @@ const ExpenseRegister = () => {
                </label>
                <CategorySelector
                   availableCategories={context?.availableCategories}
-                  onCategoriesChange={setCategories}
+                  onCategoriesChange={(value) => handleInputChange("categories", value)}
                />
             </div>
             <Button

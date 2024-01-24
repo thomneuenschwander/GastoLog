@@ -1,40 +1,23 @@
 import { NavLink } from "react-router-dom"
-
-import { useAuth } from "../../hooks/useAuth"
-import { ICredentials } from "../../context/auth/types"
-
+// COMPONENTS
 import Button from "../../components/Button"
 import InputText from "../../components/input/Input"
 import Template from "../../components/templates/Template"
 import HighLight from "../../components/Highlight"
-import { useState } from "react"
-import FieldError from "../../components/input/FieldError"
-import { loginValidation } from "../../context/auth/validation"
+// HOOKS
+import { useAuthContext } from "../../hooks/useAuthContext"
+import useAuth from "../../hooks/useAuth"
 
 const Login = () => {
-   const [email, setEmail] = useState<string>("")
-   const [password, setPassword] = useState<string>("")
-   const [error, setError] = useState<string>("")
-
-   const auth = useAuth()
+   const context = useAuthContext()
+   const {email, password, handleCredentialsInputChange} = useAuth()
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-
-      const toAuth: ICredentials = {
-         email: email,
-         password: password,
-      }
-      const error = loginValidation(toAuth)
-      if (error) {
-         setError(error)
-      } else {
-         try {
-            await auth?.authenticate(toAuth)
-         } catch (error) {
-            setError("Login inválido")
-            console.error(error)
-         }
+      try {
+         await context?.authenticate({email, password})
+      } catch (error) {
+         console.error(error)
       }
    }
 
@@ -58,7 +41,7 @@ const Login = () => {
                         style="w-full"
                         placeholder="seu email@gmail.com"
                         value={email}
-                        onChange={setEmail}
+                        onChange={(value) => handleCredentialsInputChange("email", value)}
                         autocomplete="username"
                      />
                   </div>
@@ -71,12 +54,12 @@ const Login = () => {
                         style="w-full"
                         placeholder="senha"
                         value={password}
-                        onChange={setPassword}
+                        onChange={(value) => handleCredentialsInputChange("password", value)}
                         autocomplete="current-password"
                      />
                   </div>
                   <Button style="w-full bg-primary" label="Entrar" />
-                  {error && <FieldError error="Email e senha invalidos!" />}
+                  {/* {error && <FieldError error="Email e senha invalidos!" />} */}
                </form>
             </div>
             <NavLink to="/">

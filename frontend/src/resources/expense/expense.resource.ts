@@ -7,7 +7,7 @@ export interface Expense {
 }
 export interface ExpenseReq {
    description: string
-   price: number
+   price?: number
    categories?: string[]
 }
 

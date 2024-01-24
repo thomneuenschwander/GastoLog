@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom"
 import HighLight from "../Highlight"
 
-import { useAuth } from "../../hooks/useAuth"
+import { useAuthContext } from "../../hooks/useAuthContext"
 
 const NavBar: React.FC = () => {
-   const auth = useAuth()
+   const context = useAuthContext()
    return (
       <nav>
-         {!auth?.isAuthenticate ? (
+         {!context?.isAuthenticate ? (
             <ul className="flex text-2xl gap-20 py-3">
                <li>About</li>
                <li>
@@ -29,7 +29,7 @@ const NavBar: React.FC = () => {
                   </NavLink>
                </li>
                <li>
-                  <button onClick={auth.logout}><HighLight>Sair</HighLight></button>
+                  <button onClick={context.logout}><HighLight>Sair</HighLight></button>
                </li>
             </ul>
          )}

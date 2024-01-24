@@ -1,13 +1,12 @@
-import { useAuth } from "../../hooks/useAuth"
-
+import { useAuthContext } from "../../hooks/useAuthContext"
 
 const Private = ({ children }: { children: JSX.Element }) => {
-    const auth = useAuth()
-    if(!auth?.isAuthenticate){
-        return <h1>You need to authenticate!</h1>
-    }
+   const auth = useAuthContext()
+   if (!auth?.isAuthenticate) {
+      return <h1>You need to authenticate!</h1>
+   }
 
-    return children
+   return children
 }
 
 export default Private

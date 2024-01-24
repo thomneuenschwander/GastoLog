@@ -1,25 +1,26 @@
-// ExpensePage.tsx
 import { useParams, NavLink } from "react-router-dom"
-import Template from "../components/templates/Template"
-import { useExpense } from "../hooks/useExpense"
 import { useEffect, useState } from "react"
-import { ExpenseReq } from "../resources/expense/expense.resource"
+// COMPONENTS
+import Template from "../components/templates/Template"
 import InputEdit from "../components/input/inputEdit"
-import { useExpenseService } from "../resources/expense/expense.service"
 import CategorySelector from "../components/expense/CategorySelector"
 import Highlight from "../components/Highlight"
+// HOOKS
+import { useExpenseContext } from "../hooks/useExpenseContext"
+import { ExpenseReq } from "../resources/expense/expense.resource"
+import useExpense from "../hooks/useExpense"
 
 const ExpensePage: React.FC = () => {
-   const [categories, setCategories] = useState<string[]>()
    const [editMode, setEditMode] = useState<boolean>(false)
    const [editedExpense, setEditedExpense] = useState<ExpenseReq>({
       description: "",
       price: 0,
+      categories: [],
    })
 
    const { id } = useParams<{ id: string }>()
-   const context = useExpense()
-   const service = useExpenseService()
+   const context = useExpenseContext()
+   const { handleDelete, handleUpdate } = useExpense()
 
    const expense = context?.getExpenseById(Number(id))
 
@@ -35,34 +36,9 @@ const ExpensePage: React.FC = () => {
 
    const handleInputChange = (
       field: keyof ExpenseReq,
-      value: string | number
+      value: string | number | string[]
    ) => {
       setEditedExpense((prev) => ({ ...prev, [field]: value }))
-   }
-
-   const handleDelete = async () => {
-      try {
-         const res = await service.deleteExpense(Number(id))
-         console.log(res)
-         context?.loadExpenses()
-      } catch (error) {
-         console.error(error)
-      }
-   }
-
-   const handleUpdate = async (
-      newExpense: ExpenseReq,
-      categories: string[] | undefined
-   ) => {
-      try {
-         newExpense.categories = categories
-         console.log(newExpense)
-         const res = await service.updateExpense(newExpense, Number(id))
-         console.log(res)
-         context?.loadExpenses()
-      } catch (error) {
-         console.error(error)
-      }
    }
 
    return (
@@ -82,7 +58,7 @@ const ExpensePage: React.FC = () => {
                               type="submit"
                               className="w-full h-full"
                               onClick={() => {
-                                 handleUpdate(editedExpense, categories)
+                                 handleUpdate(editedExpense)
                                  setEditMode(false)
                               }}
                            >
@@ -218,7 +194,7 @@ const ExpensePage: React.FC = () => {
                                  availableCategories={
                                     context?.availableCategories
                                  }
-                                 onCategoriesChange={setCategories}
+                                 onCategoriesChange={(value) => handleInputChange("categories", value)}
                               />
                            ) : (
                               <span className="text-gray-700">

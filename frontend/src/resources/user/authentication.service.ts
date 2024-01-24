@@ -11,22 +11,22 @@ class AuthService {
    baseURL: string = "/user"
    static AUTH_PARAM: string = "_auth"
 
-   async authenticate(credentials: Credentials): Promise<AccessToken> {
+   public async authenticate(credentials: Credentials): Promise<AccessToken> {
       const res = await api.post(this.baseURL + "/auth/login", credentials)
       return res.data
    }
-   async save(user: RegisterData): Promise<void> {
+   public async save(user: RegisterData): Promise<void> {
       await api.post(this.baseURL + "/auth/register", user)
    }
 
-   async initSession(credentials: Credentials): Promise<UserSessionToken> {
-      const token = await this.authenticate(credentials)
+   public async initSession({email, password}: Credentials): Promise<UserSessionToken> {
+      const token = await this.authenticate({ email, password })
       const session = this.decodeToken(token)
       this.setUserSession(session)
       return session
    }
 
-   decodeToken(token: AccessToken): UserSessionToken {
+   public decodeToken(token: AccessToken): UserSessionToken {
       if (!token.accessToken) {
          throw new Error("Undefined token")
       }
@@ -41,7 +41,7 @@ class AuthService {
       return userSessionToken;
    }
 
-   setUserSession(userSessionToken: UserSessionToken) {
+   public setUserSession(userSessionToken: UserSessionToken) {
       try {
          localStorage.setItem(
             AuthService.AUTH_PARAM,
@@ -52,7 +52,7 @@ class AuthService {
       }
    }
 
-   getUserSession(): UserSessionToken | null {
+   public getUserSession(): UserSessionToken | null {
       try {
          const authString = localStorage.getItem(AuthService.AUTH_PARAM)
          if (!authString) {
@@ -66,7 +66,7 @@ class AuthService {
       }
    }
 
-   isSessionValid(): boolean {
+   public isSessionValid(): boolean {
       const userSession: UserSessionToken | null = this.getUserSession()
       if (!userSession) {
          return false
@@ -81,7 +81,7 @@ class AuthService {
       return false
    }
 
-   invalidateSession(): void {
+   public invalidateSession(): void {
       try {
          localStorage.removeItem(AuthService.AUTH_PARAM)
       } catch (error) {

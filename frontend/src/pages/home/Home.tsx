@@ -3,13 +3,13 @@ import ExpenseCard from "../../components/expense/ExpenseCard"
 import Template from "../../components/templates/Template"
 import ExpenseRegister from "./ExpenseRegister"
 import Profile from "./Profile"
-import { useExpense } from "../../hooks/useExpense"
+import {  useExpenseContext } from "../../hooks/useExpenseContext"
 import { Link } from "react-router-dom"
-import { useAuth } from "../../hooks/useAuth"
+import { useAuthContext } from "../../hooks/useAuthContext"
 
 function App() {
-   const expenseContext = useExpense()
-   const authContext = useAuth()
+   const expenseContext = useExpenseContext()
+   const authContext = useAuthContext()
 
    return (
       <Template>

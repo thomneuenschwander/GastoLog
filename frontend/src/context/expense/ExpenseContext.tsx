@@ -2,7 +2,7 @@
 import { Category, Expense } from "../../resources/expense/expense.resource"
 import { createContext, useEffect, useState } from "react"
 import { useExpenseService } from "../../resources/expense/expense.service"
-import { useAuth } from "../../hooks/useAuth"
+import { useAuthContext } from "../../hooks/useAuthContext"
 
 export const ExpenseContext = createContext<IExpenseContext | null>(null)
 
@@ -11,7 +11,7 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
    const [availableCategories, setAvailableCategories] = useState<Category[] | null>(null)
 
    const expenseService = useExpenseService()
-   const auth = useAuth()
+   const auth = useAuthContext()
 
    const loadExpenses = async () => {
       try {

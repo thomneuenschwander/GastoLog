@@ -1,43 +1,29 @@
-import { useState } from "react"
 import { NavLink } from "react-router-dom"
-
-import { IRegister } from "../../context/auth/types"
-
+// COMPONENTS
 import Button from "../../components/Button"
 import InputText from "../../components/input/Input"
 import Template from "../../components/templates/Template"
 import HighLight from "../../components/Highlight"
-import { useAuth } from "../../hooks/useAuth"
-import FieldError from "../../components/input/FieldError"
-import { registerValidation } from "../../context/auth/validation"
-
+// HOOKS
+import { useAuthContext } from "../../hooks/useAuthContext"
+import useRegister from "../../hooks/useRegister"
+import { RegisterData } from "../../resources/user/user.resource"
 
 const Register = () => {
-   const [name, setName] = useState<string>("")
-   const [email, setEmail] = useState<string>("")
-   const [password, setPassword] = useState<string>("")
-   const [confirmPassword, setConfirmPassword] = useState<string>("")
-   const [error, setError] = useState<string>("")
 
-   const auth = useAuth()
+   const auth = useAuthContext()
+   const { name, email, password, confirmPassword, handleRegisterInputChange } =
+      useRegister()
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      const toPersist: IRegister = {
-         name: name,
-         email: email,
-         password: password,
-         confirmPassword: confirmPassword,
-      }
-      const error = registerValidation(toPersist)
-      if(error){
-         setError(error)
-      }else{
-         try {
-            await auth?.register(toPersist)
-         } catch (error) {
-            console.error(error)
-         }
+      console.log(name, email, password, confirmPassword)
+      try {
+         await auth?.register(
+            new RegisterData(name, email, password, confirmPassword)
+         )
+      } catch (error) {
+         console.error(error)
       }
    }
 
@@ -62,7 +48,9 @@ const Register = () => {
                         style="w-full"
                         placeholder="seu nome"
                         value={name}
-                        onChange={setName}
+                        onChange={(value) =>
+                           handleRegisterInputChange("name", value)
+                        }
                      />
                   </div>
                   <div>
@@ -72,9 +60,11 @@ const Register = () => {
                      <InputText
                         type="text"
                         style="w-full"
-                        placeholder="sua senha@gmail.com"
+                        placeholder="seu email@gmail.com"
                         value={email}
-                        onChange={setEmail}
+                        onChange={(value) =>
+                           handleRegisterInputChange("email", value)
+                        }
                         autocomplete="username"
                      />
                   </div>
@@ -87,7 +77,9 @@ const Register = () => {
                         style="w-full"
                         placeholder="senha"
                         value={password}
-                        onChange={setPassword}
+                        onChange={(value) =>
+                           handleRegisterInputChange("password", value)
+                        }
                         autocomplete="new-password"
                      />
                   </div>
@@ -100,16 +92,20 @@ const Register = () => {
                         style="w-full"
                         placeholder="repita sua senha"
                         value={confirmPassword}
-                        onChange={setConfirmPassword}
+                        onChange={(value) =>
+                           handleRegisterInputChange("confirmPassword", value)
+                        }
                         autocomplete="new-password"
                      />
                   </div>
                   <Button style="w-full bg-primary" label="Registrar" />
-                  {error && <FieldError error={error} style="font-medium underline" />}
+                  {/* {error && (
+                     <FieldError error={error} style="font-medium underline" />
+                  )} */}
                </form>
             </div>
             <NavLink to="/">
-               <Button style="bg-gray-400" label="voltar" type="submit"/>
+               <Button style="bg-gray-400" label="voltar" type="submit" />
             </NavLink>
          </div>
       </Template>
