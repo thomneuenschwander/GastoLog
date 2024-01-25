@@ -1,6 +1,7 @@
 package io.github.thomneuenschwander.GastoLog.application.user;
 
 import java.io.IOException;
+import java.net.URI;
 import java.security.Principal;
 import java.util.List;
 
@@ -48,8 +49,8 @@ public class UserController {
     public ResponseEntity<UserDTO> insert(@RequestBody RegisterDTO dto) {
         var mapped = mapper.mapToUser(dto);
         var user = userService.insert(mapped);
-        var res = mapper.userToDTO(user, null);
-        return ResponseEntity.ok().body(res);
+        var res = mapper.userToDTO(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
     @PostMapping("/auth/login")
@@ -61,31 +62,27 @@ public class UserController {
         return ResponseEntity.ok().body(jwt);
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity<UserDTO> getProfile(Principal auth) throws Exception {
-        var user = userService.findByEmail(auth.getName());
-        String path = "/image/get/" + user.getId();
-        var url = ServletUriComponentsBuilder
-        .fromCurrentRequestUri()
-        .path(path)
-        .build().toUri();
-        var userDTO = mapper.userToDTO(user, url.toString());
-        return ResponseEntity.ok(userDTO);
+    @PostMapping("/image/add")
+    public ResponseEntity<Void> insertImage(@RequestParam("file") MultipartFile file, Principal auth) throws IOException {
+        var user = userService.saveImage(file, auth.getName());
+        var imageUri = buildImageURL(user);
+        return ResponseEntity.created(imageUri).build();
     }
 
-    @GetMapping("/profile/image/get/{userId}")
-    public ResponseEntity<byte[]> getImage(@PathVariable Long userId) throws Exception {
-        var user = userService.findById(userId);
+    @GetMapping("/image/get/{email}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String email) throws Exception {
+        var user = userService.findByEmail(email);
         var ImageProfile = user.getImageProfile();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
-
         return new ResponseEntity<>(ImageProfile, headers, HttpStatus.OK);
     }
 
-    @PostMapping("/profile/image/add")
-    public ResponseEntity<Void> saveImage(@RequestParam("file") MultipartFile file, Principal auth) throws IOException {
-        userService.saveImage(file, auth.getName());
-        return ResponseEntity.badRequest().build();
+    private URI buildImageURL(User user){
+        String imagePath = "/image/" + user.getEmail();
+        return ServletUriComponentsBuilder
+                .fromCurrentRequestUri()
+                .path(imagePath)
+                .build().toUri();
     }
 }

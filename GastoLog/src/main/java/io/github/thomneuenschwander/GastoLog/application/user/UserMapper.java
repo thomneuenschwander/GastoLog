@@ -11,8 +11,8 @@ public class UserMapper {
         return new User(null, dto.name(), dto.email(), dto.password(), null, null);
     }
 
-    public UserDTO userToDTO(User user, String url){
-        return new UserDTO(user.getName(), user.getEmail(), url);
+    public UserDTO userToDTO(User user){
+        return new UserDTO(user.getName(), user.getEmail());
     }
 
 }

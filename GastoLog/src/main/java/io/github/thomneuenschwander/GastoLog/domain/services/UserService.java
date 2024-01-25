@@ -15,5 +15,5 @@ public interface UserService {
     public User insert(User user);
     public AccessToken authenticate(String email, String password);
     public User findByEmail(String email);
-    public void saveImage(MultipartFile file, String email) throws IOException;
+    public User saveImage(MultipartFile file, String email) throws IOException;
 }

@@ -77,13 +77,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveImage(MultipartFile file, String email) throws IOException {
+    public User saveImage(MultipartFile file, String email) throws IOException {
         if (!file.getContentType().equals(MediaType.IMAGE_JPEG_VALUE)) {
             throw new ImageFormatNotSupportedException("Cannot support " + file.getContentType() + " formt");
         }
         var user = findByEmail(email);
         user.setImageProfile(file.getBytes());
         userRepository.save(user);
+        return user;
     }
 
 }
