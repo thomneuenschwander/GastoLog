@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { NavLink } from "react-router-dom"
 // COMPONENTS
 import Button from "../../components/Button"
@@ -7,17 +8,31 @@ import HighLight from "../../components/Highlight"
 // HOOKS
 import { useAuthContext } from "../../hooks/useAuthContext"
 import useAuth from "../../hooks/useAuth"
+import { Credentials } from "../../resources/user/user.resource"
+import useValidation from "../../hooks/useValidation"
+import FieldError from "../../components/input/FieldError"
 
 const Login = () => {
+   const [error, setError] = useState<string>("")
    const context = useAuthContext()
-   const {email, password, handleCredentialsInputChange} = useAuth()
+   const { email, password, handleCredentialsInputChange } = useAuth()
+   const { loginValidation } = useValidation()
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      try {
-         await context?.authenticate({email, password})
-      } catch (error) {
-         console.error(error)
+      const credentials: Credentials = { email: email, password: password }
+      const validationError = loginValidation(credentials)
+      setError(validationError)
+      if (!validationError) {
+         console.log("foi")
+         try {
+            await context?.authenticate(credentials)
+         } catch (error) {
+            setError("Credenciais inválidas!")
+            console.log(error)
+         }
+      } else {
+         console.log("nao foi")
       }
    }
 
@@ -41,7 +56,9 @@ const Login = () => {
                         style="w-full"
                         placeholder="seu email@gmail.com"
                         value={email}
-                        onChange={(value) => handleCredentialsInputChange("email", value)}
+                        onChange={(value) =>
+                           handleCredentialsInputChange("email", value)
+                        }
                         autocomplete="username"
                      />
                   </div>
@@ -54,12 +71,14 @@ const Login = () => {
                         style="w-full"
                         placeholder="senha"
                         value={password}
-                        onChange={(value) => handleCredentialsInputChange("password", value)}
+                        onChange={(value) =>
+                           handleCredentialsInputChange("password", value)
+                        }
                         autocomplete="current-password"
                      />
                   </div>
                   <Button style="w-full bg-primary" label="Entrar" />
-                  {/* {error && <FieldError error="Email e senha invalidos!" />} */}
+                  {error && <FieldError error={error} />}
                </form>
             </div>
             <NavLink to="/">

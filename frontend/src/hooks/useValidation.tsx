@@ -1,12 +1,13 @@
-import { useState } from "react"
 import { Credentials, RegisterData } from "../resources/user/user.resource"
 
 const useValidation = () => {
-   const [error, setError] = useState<string>("")
-
    const hasLowerCase = (str: string) => /[a-z]/.test(str)
    const hasSpecialsCharacters = (str: string) =>
       ["$", "#", "@", ")", "(", "!", "^", "&"].some((char) =>
+         str.includes(char)
+      )
+      const hasNumbers = (str: string) =>
+      ["1", "2", "3", "4", "5", "6", "7", "8", "9"].some((char) =>
          str.includes(char)
       )
 
@@ -33,7 +34,9 @@ const useValidation = () => {
       if (name!.length < 3) {
          return "O nome deve ter pelo menos 3 caracteres"
       }
-
+      if(hasNumbers(name!)){
+         return "O nome não pode haver numeros!"
+      }
       return ""
    }
 
@@ -86,13 +89,12 @@ const useValidation = () => {
          confirmPassword
       )
       if (nameError) {
-         setError(nameError)
+         return nameError
       } else if (emailError) {
-         setError(emailError)
+         return emailError
       } else if (passwordError) {
-         setError(passwordError)
+         return passwordError
       }
-
       return ""
    }
 
@@ -101,15 +103,14 @@ const useValidation = () => {
       const passwordError = validatePassword(password)
 
       if (emailError) {
-         setError(emailError)
+         return emailError
       } else if (passwordError) {
-         setError(passwordError)
+         return passwordError
       }
       return ""
    }
 
    return {
-      error,
       registerValidation,
       loginValidation,
    }

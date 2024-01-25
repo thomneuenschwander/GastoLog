@@ -8,22 +8,37 @@ import HighLight from "../../components/Highlight"
 import { useAuthContext } from "../../hooks/useAuthContext"
 import useRegister from "../../hooks/useRegister"
 import { RegisterData } from "../../resources/user/user.resource"
+import { useState } from "react"
+import useValidation from "../../hooks/useValidation"
+import FieldError from "../../components/input/FieldError"
 
 const Register = () => {
-
+   const [error, setError] = useState<string>("")
    const auth = useAuthContext()
    const { name, email, password, confirmPassword, handleRegisterInputChange } =
       useRegister()
+   const { registerValidation } = useValidation()
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      console.log(name, email, password, confirmPassword)
-      try {
-         await auth?.register(
-            new RegisterData(name, email, password, confirmPassword)
-         )
-      } catch (error) {
-         console.error(error)
+      const user: RegisterData = {
+         name: name,
+         email: email,
+         password: password,
+         confirmPassword: confirmPassword,
+      }
+      const validationError = registerValidation(user)
+      setError(validationError)
+      if(!validationError){
+         console.log("foi")
+         try {
+            await auth?.register(user)
+         } catch (error) {
+            setError("Este email ja esta cadastrado!")
+            console.error(error)
+         }
+      }else{
+         console.log("nao foi")
       }
    }
 
@@ -99,9 +114,9 @@ const Register = () => {
                      />
                   </div>
                   <Button style="w-full bg-primary" label="Registrar" />
-                  {/* {error && (
+                  {error && (
                      <FieldError error={error} style="font-medium underline" />
-                  )} */}
+                  )}
                </form>
             </div>
             <NavLink to="/">

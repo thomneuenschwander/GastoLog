@@ -19,8 +19,10 @@ class AuthService {
       await api.post(this.baseURL + "/auth/register", user)
    }
 
-   public async initSession({email, password}: Credentials): Promise<UserSessionToken> {
-      const token = await this.authenticate({ email, password })
+   public async initSession(
+      credentials: Credentials
+   ): Promise<UserSessionToken> {
+      const token = await this.authenticate(credentials)
       const session = this.decodeToken(token)
       this.setUserSession(session)
       return session
@@ -31,14 +33,14 @@ class AuthService {
          throw new Error("Undefined token")
       }
       const decodedToken: any = jwtDecode(token.accessToken)
-   
+
       const userSessionToken: UserSessionToken = {
          accessToken: token.accessToken,
          email: decodedToken.sub,
          expiration: decodedToken.exp,
          name: decodedToken.name,
       }
-      return userSessionToken;
+      return userSessionToken
    }
 
    public setUserSession(userSessionToken: UserSessionToken) {

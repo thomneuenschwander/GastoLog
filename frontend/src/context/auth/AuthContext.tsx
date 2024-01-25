@@ -43,21 +43,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
    }, [isAuthenticate])
 
-   async function authenticate({ email, password }: Credentials) {
-      console.log({ email, password })
-      const userSessionToken = await authService.initSession({
-         email,
-         password,
-      })
+   async function authenticate(credentials: Credentials) {
+      const userSessionToken = await authService.initSession(credentials)
       setUser(userSessionToken)
       setIsAuthenticate(true)
       navigate("/home")
    }
 
    async function register(user: RegisterData) {
-      console.log(user)
       await authService.save(user)
-      await authenticate(new Credentials(user.email, user.email))
+      const credentials: Credentials = {
+         email: user.email,
+         password: user.password,
+      }
+      await authenticate(credentials)
    }
 
    function logout() {
