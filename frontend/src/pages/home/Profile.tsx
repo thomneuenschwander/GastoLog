@@ -1,14 +1,15 @@
+import FileUpload from "../../components/input/FileUpload"
+
 const Profile = () => {
-   
 
    
    
    return (
       <div>
-         
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit
-         excepturi itaque vel hic labore amet perferendis nobis vitae ab
-         laudantium. 
+         <FileUpload fileBoxStyle="bg-primary text-white w-full opacity-90" generalStyle="text-xl  w-full "/>
+         <div className="bg-black">
+            asda
+         </div>
       </div>
    )
 }
