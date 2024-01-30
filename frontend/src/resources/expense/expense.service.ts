@@ -32,8 +32,10 @@ class ExpenseService {
       return await api.put(this.baseURL+`/update/${expenseId}`, expenseData)
    }
    async getAllCategories() {
+      console.log('categories reloaded')
       this.authenticateRequests()
       const res = await api.get("/category")
+      console.log(res.data)
       return res.data
    }
 }

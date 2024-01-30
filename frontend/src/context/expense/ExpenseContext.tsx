@@ -11,9 +11,10 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 	const [availableCategories, setAvailableCategories] = useState<
 		Category[] | null
 	>(null)
+	const [loaded, setLoaded] = useState<boolean>(false)
 
 	const expenseService = useExpenseService()
-	const auth = useAuthContext()
+	const authContext = useAuthContext()
 
 	const loadExpenses = async () => {
 		try {
@@ -38,26 +39,30 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 	}
 
 	useEffect(() => {
-		if (auth?.isAuthenticate) {
-			loadCategories()
-			loadExpenses()
+		const fetchData = async () => {
+			await loadCategories()
+			await loadExpenses()
+			setLoaded(true)
 		}
-	}, [auth?.isAuthenticate])
+		if (authContext?.isAuthenticate && !loaded) {
+			fetchData()
+		}
+	}, [authContext?.isAuthenticate, loaded])
 
 	const totalSpent: number = useMemo(() => {
-		if (auth?.isAuthenticate && expenses) {
+		if (authContext?.isAuthenticate && expenses) {
 			return expenses.reduce((acc, exp) => acc + exp.price, 0)
 		}
 		return 0
-	}, [auth?.isAuthenticate, expenses])
+	}, [authContext?.isAuthenticate, expenses])
 
 	const contextValue: ExpenseContext = {
 		expenses,
 		availableCategories,
+		totalSpent,
 		loadExpenses,
 		getExpenseById,
 		loadCategories,
-      	totalSpent,
 	}
 
 	return (
@@ -73,7 +78,7 @@ export interface ExpenseContext {
 	loadExpenses: () => void
 	getExpenseById: (expenseId: number) => Expense | undefined
 	loadCategories: () => void
-    totalSpent: number
+	totalSpent: number
 }
 
 export interface IAuthProvider {
