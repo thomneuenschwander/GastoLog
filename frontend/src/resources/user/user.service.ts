@@ -1,4 +1,5 @@
 import { api } from "../api"
+import { UserSessionToken } from "./user.resource"
 
 export function getUserLocalStorage() {
    const json = localStorage.getItem("_auth")
@@ -13,7 +14,7 @@ export function getUserLocalStorage() {
 class UserService {
    baseURL: string = "/user"
 
-   authenticateRequests() {
+   authenticateRequests(): UserSessionToken {
       const user = getUserLocalStorage()
       if (!user || !user.accessToken) {
          throw new Error("Invalid or null token")
@@ -21,15 +22,18 @@ class UserService {
       api.defaults.headers.common[
          "Authorization"
       ] = `Bearer ${user.accessToken}`
+      return user
    }
 
-   async getImageProfile(url: string) {
+   async getImageProfile(): Promise<Response> {
       try {
-         this.authenticateRequests()
-         const res = await api.get(url)
-         return res.data
+         const user = getUserLocalStorage()
+         api.defaults.headers.common[
+            "Authorization"
+         ] = `Bearer ${user.accessToken}`
+         return await api.get(`/user/image/get/${user.email}`)
       } catch (error) {
-         console.error("Erro ao obter perfil:", error)
+         console.error(error)
          throw error
       }
    }
@@ -43,14 +47,14 @@ class UserService {
          const formData = new FormData()
          formData.append("file", file)
 
-         const res = await api.post("/user/image/add", formData, {
-            headers: {
-               Authorization: `Bearer ${user.accessToken}`,
-               "Content-Type": "multipart/form-data", 
-            },
-         })
-
-         console.log(res)
+         await api
+            .post("/user/image/add", formData, {
+               headers: {
+                  Authorization: `Bearer ${user.accessToken}`,
+                  "Content-Type": "multipart/form-data",
+               },
+            })
+            .then((res) => console.log(res.status))
       } catch (error) {
          console.error(error)
       }

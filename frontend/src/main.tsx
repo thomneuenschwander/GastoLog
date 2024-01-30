@@ -16,6 +16,7 @@ import { AuthProvider } from "./context/auth/AuthContext.tsx"
 import Private from "./context/auth/Private.tsx"
 import { ExpenseProvider } from "./context/expense/ExpenseContext.tsx"
 import ExpensePage from "./pages/ExpensePage.tsx"
+import MyProjects from "./pages/projects/MyProjects.tsx"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
    <React.StrictMode>
@@ -26,6 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/auth/register" element={<Register />} />
                   <Route path="/auth/login" element={<Login />} />
+                  <Route path="/projects" element={<MyProjects />} />
                   <Route
                      path="/home"
                      element={
