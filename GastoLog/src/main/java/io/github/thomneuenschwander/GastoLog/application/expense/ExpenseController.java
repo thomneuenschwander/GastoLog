@@ -11,18 +11,17 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
 @RestController
 @RequestMapping("/expense")
 public class ExpenseController {
-    
+
     @Autowired
     private ExpenseServiceImpl expenseService;
 
@@ -30,16 +29,16 @@ public class ExpenseController {
     private ExpenseMapper mapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExpenseResDTO>findOneByClient(@PathVariable Long id, Principal auth){
+    public ResponseEntity<ExpenseResDTO> findOneByClient(@PathVariable Long id, Principal auth) {
         var expense = expenseService.findOneByClient(id, auth.getName());
         var res = mapper.expenseToResponseDTO(expense);
         return ResponseEntity.ok().body(res);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ExpenseResDTO>> findAllByClient(Principal auth) throws Exception{
-        var list = expenseService.findAllByClient(auth.getName());
-        var dto = list.stream().map(exp -> mapper.expenseToResponseDTO(exp)).collect(Collectors.toList());
+    public ResponseEntity<List<ExpenseResDTO>> findAllByClient(Principal auth) throws Exception {
+        var result = expenseService.findAllByClient(auth.getName());
+        var dto = result.stream().map(exp -> mapper.expenseToResponseDTO(exp)).collect(Collectors.toList());
         return ResponseEntity.ok().body(dto);
     }
 
@@ -53,17 +52,26 @@ public class ExpenseController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ExpenseResDTO> putMethodName(@PathVariable Long id, @RequestBody ExpenseReqDTO reqDTO, Principal auth) {
+    public ResponseEntity<ExpenseResDTO> putMethodName(@PathVariable Long id, @RequestBody ExpenseReqDTO reqDTO,
+            Principal auth) {
         var expense = mapper.mapToExpense(reqDTO);
         var res = expenseService.update(expense, id, auth.getName(), reqDTO.categories());
         var dto = mapper.expenseToResponseDTO(res);
         return ResponseEntity.ok().body(dto);
     }
-    
+
     @Transactional
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, Principal auth){
+    public ResponseEntity<Void> delete(@PathVariable Long id, Principal auth) {
         expenseService.delete(id, auth.getName());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExpenseResDTO>> search(@RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "price", required = false, defaultValue = "0.0") String price, Principal auth) {
+        var result = expenseService.search(name, Double.parseDouble(price), auth.getName());
+        var dto = result.stream().map(exp -> mapper.expenseToResponseDTO(exp)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(dto);
     }
 }

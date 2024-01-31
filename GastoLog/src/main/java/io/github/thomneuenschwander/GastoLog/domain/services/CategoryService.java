@@ -5,6 +5,8 @@ import java.util.List;
 import io.github.thomneuenschwander.GastoLog.domain.entities.Category;
 
 public interface CategoryService {
-    public List<Category> findAll();
-    public Category findByName(String categoryName);
+    
+    List<Category> findAll();
+
+    Category findByName(String categoryName);
 }

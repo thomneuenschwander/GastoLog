@@ -9,11 +9,16 @@ import io.github.thomneuenschwander.GastoLog.domain.AccessToken;
 import io.github.thomneuenschwander.GastoLog.domain.entities.User;
 
 public interface UserService {
+    
+    List<User> findAll();
 
-    public List<User> findAll();
-    public User findById(Long id);
-    public User insert(User user);
-    public AccessToken authenticate(String email, String password);
-    public User findByEmail(String email);
-    public User saveImage(MultipartFile file, String email) throws IOException;
+    User findById(Long id);
+
+    User insert(User user);
+
+    AccessToken authenticate(String email, String password);
+
+    User findByEmail(String email);
+
+    User saveImage(MultipartFile file, String email) throws IOException;
 }

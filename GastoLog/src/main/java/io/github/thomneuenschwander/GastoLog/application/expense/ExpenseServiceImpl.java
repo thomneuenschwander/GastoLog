@@ -82,4 +82,10 @@ public class ExpenseServiceImpl implements ExpenseService {
         }
     }
 
+    @Override
+    public List<Expense> search(String name, Double price, String email) {
+        var id = userService.findByEmail(email).getId();
+        return expenseRepository.findByNameLikeAndPriceGreaterAndUserId(name, price, id);
+    }
+
 }
