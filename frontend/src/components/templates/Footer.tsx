@@ -1,7 +1,7 @@
 const Footer: React.FC = () => {
     return (
-      <footer className="bg-bg_primary text-white py-4 mt-8">
-              <div className="container mx-auto text-center">
+      <footer className="bg-bg_primary text-white py-2">
+              <div className="flex justify-center">
                   Desenvolvido por Thomas Neuenschwander
               </div>
           </footer>

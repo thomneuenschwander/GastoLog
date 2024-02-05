@@ -23,9 +23,9 @@ const Profile = () => {
 	}, [])
 
 	return (
-		<div className="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto p-4">
+		<div className="bg-white p-6 rounded-lg shadow-md p-4">
 			<FileUpload
-				fileBoxStyle="bg-primary text-white w-full opacity-90"
+				fileBoxStyle="text-primary text-medium w-full opacity-90"
 				generalStyle="text-xl w-full"
 			/>
 			<h1 className="text-2xl font-semibold mb-6">Perfil do Usuário</h1>
@@ -38,9 +38,10 @@ const Profile = () => {
 					/>
 				) : (
 					<div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center bg-gray">
-						<span className="text-gray-600">Sem foto</span>
+						<span className="text-gray-600">Sem foto</span> 
 					</div>
 				)}
+				{/* https://w7.pngwing.com/pngs/1000/665/png-transparent-computer-icons-profile-s-free-angle-sphere-profile-cliparts-free.png */}
 			</div>
 			<div className="text-left p-2">
 				<h2 className="text-xl font-medium letter-space-2">

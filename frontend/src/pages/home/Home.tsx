@@ -13,7 +13,7 @@ function App() {
 
    return (
       <Template>
-         <main className="text-center p-3">
+         <main className="text-center py-8 px-20">
             <h1 className="text-4xl text-indigo-800 mb-8 lg:mb-12">
                <Highlight style="text-indigo-900">
                   {authContext?.name}
@@ -24,9 +24,9 @@ function App() {
                <article className="lg:w-1/4">
                   <ExpenseRegister />
                </article>
-               <div className="lg:w-1/2 flex flex-col gap-4">
-                  {expenseContext?.expenses &&
-                     expenseContext.expenses.map((exp) => (
+               <div className="lg:w-1/2 flex flex-col gap-4 ">
+                  {expenseContext?.sortedExpenses &&
+                     expenseContext.sortedExpenses.map((exp) => (
                         <Link key={exp.id} to={`/expense/${exp.id}`}>
                            <ExpenseCard
                               price={exp.price}

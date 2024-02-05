@@ -45,8 +45,8 @@ const Register = () => {
    return (
       <Template>
          <div className="text-center">
-            <div className="flex flex-col items-center justify-center gap-5 max-w-2xl mx-auto mt-20 p-6 bg-white rounded-lg shadow-md mb-10">
-               <h1 className="font-medium text-2xl text-primary">
+            <div className="flex flex-col items-center justify-center gap-8 max-w-2xl mx-auto mt-20 p-6 bg-white rounded-lg shadow-md mb-10 text-xl">
+               <h1 className="font-medium text-3xl text-primary">
                   <HighLight>Crie uma conta</HighLight> para anotar suas
                   despesas
                </h1>
@@ -120,7 +120,7 @@ const Register = () => {
                </form>
             </div>
             <NavLink to="/">
-               <Button style="bg-gray-400" label="voltar" type="submit" />
+               <Button style="bg-primary text-xl font-mediumfont-medium transition duration-300 ease-in-out transform hover:-translate-y-1" label="voltar" type="submit" />
             </NavLink>
          </div>
       </Template>

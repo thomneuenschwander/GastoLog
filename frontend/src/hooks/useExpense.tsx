@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ExpenseReq } from "../resources/expense/expense.resource"
+import { Expense, ExpenseReq } from "../resources/expense/expense.resource"
 import { useExpenseContext } from "./useExpenseContext"
 import { useExpenseService } from "../resources/expense/expense.service"
 import { useParams } from "react-router-dom"
@@ -40,12 +40,20 @@ const useExpense = () => {
          console.error(error)
       }
    }
+   const sortDescending = (expenses: Expense[]): Expense[] => {
+      return expenses.sort((a, b) => a.price - b.price)
+   }
+   const sortAscending = (expenses: Expense[]): Expense[] => {
+      return expenses.sort((a, b) => b.price - a.price)
+   }
 
    return {
       expense,
       handleInputChange,
       handleDelete,
       handleUpdate,
+      sortDescending,
+      sortAscending,
    }
 }
 

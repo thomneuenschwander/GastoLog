@@ -1,20 +1,31 @@
-import Footer from "./Footer"
-import Header from "./Header"
+import React from 'react';
+import Footer from "./Footer";
+import Header from "./Header";
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 interface TemplateProps {
-    children: React.ReactNode
+    children: React.ReactNode;
 }
 
-const Template: React.FC<TemplateProps> = ({ children }: TemplateProps) => {
-  return (
-    <div className="flex flex-col min-h-screen">
-        <Header />
-          <div className="flex-grow container mx-auto mt-8"> {/*container mx-auto mt-8 px-4*/}
-            {children}
-          </div>
-        <Footer />
-    </div>
-  )
-}
+const Template: React.FC<TemplateProps> = ({ children }) => {
 
-export default Template
+    const auth = useAuthContext()
+
+    let mainClass = "flex-grow overflow-auto";
+
+    if (!auth?.isAuthenticate) {
+        mainClass += " bg-gradient-to-br from-cyan-500 to-blue-700";
+    }
+
+    return (
+        <div className="flex flex-col h-screen">
+            <Header />
+            <main className={mainClass}>
+                {children}
+            </main>
+            <Footer />
+        </div>
+    );
+};
+
+export default Template;
