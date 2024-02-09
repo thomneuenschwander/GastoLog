@@ -41,8 +41,10 @@ class UserService {
 			return new Promise<string>((resolve, reject) => {
 				reader.onloadend = () => {
 					const imageData = reader.result as string
-					const imageUrl = `data:image/jpeg;base64,${btoa(imageData)}`
-					resolve(imageUrl)
+					if(imageData){
+						const imageUrl = `data:image/jpeg;base64,${btoa(imageData)}`
+						resolve(imageUrl)
+					}
 				}
 
 				reader.onerror = () => {

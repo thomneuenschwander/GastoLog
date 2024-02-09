@@ -19,8 +19,10 @@ const Profile = () => {
 				setImage(img)
 			}
 			fetchImage()
+			console.log('image '+ image)
 		}
 	}, [])
+	
 
 	return (
 		<div className="bg-white p-6 rounded-lg shadow-md p-4">
@@ -37,11 +39,12 @@ const Profile = () => {
 						className="w-32 h-32 rounded-full object-cover"
 					/>
 				) : (
-					<div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center bg-gray">
-						<span className="text-gray-600">Sem foto</span> 
-					</div>
+					<img
+						src='https://w7.pngwing.com/pngs/1000/665/png-transparent-computer-icons-profile-s-free-angle-sphere-profile-cliparts-free.png'
+						alt="Foto de perfil"
+						className="w-32 h-32 rounded-full object-cover"
+					/>
 				)}
-				{/* https://w7.pngwing.com/pngs/1000/665/png-transparent-computer-icons-profile-s-free-angle-sphere-profile-cliparts-free.png */}
 			</div>
 			<div className="text-left p-2">
 				<h2 className="text-xl font-medium letter-space-2">

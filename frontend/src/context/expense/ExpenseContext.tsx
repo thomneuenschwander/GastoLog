@@ -49,7 +49,7 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 		if (loaded && expenses && sortType === 'default') {
 			setSortedExpenses(expenses)
 		}
-	}, [authContext?.isAuthenticate, loaded, sortType])
+	}, [authContext?.isAuthenticate, loaded, sortType, expenses])
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -72,6 +72,7 @@ export const ExpenseProvider = ({ children }: IAuthProvider) => {
 		} else if (type === "descending") {
 			sortedExpenses = [...expenses!].sort((a, b) => b.price - a.price)
 		}
+		console.log('sorting')
 		console.log(sortedExpenses)
 		setSortedExpenses(sortedExpenses)
 		setActiveSort(type)

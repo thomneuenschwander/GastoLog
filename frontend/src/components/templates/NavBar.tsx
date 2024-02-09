@@ -4,6 +4,9 @@ import HighLight from "../Highlight"
 import { useAuthContext } from "../../hooks/useAuthContext"
 import { useExpenseContext } from "../../hooks/useExpenseContext"
 
+import { IoDocumentOutline  } from 'react-icons/io5'
+import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai'
+
 const NavBar: React.FC = () => {
 	const context = useAuthContext()
 	const expenseContext = useExpenseContext()
@@ -24,6 +27,7 @@ const NavBar: React.FC = () => {
 					</li>
 				</ul>
 			) : (
+
 				<div className="flex text-xl gap-5">
 					<button
 						onClick={() => {
@@ -35,7 +39,7 @@ const NavBar: React.FC = () => {
 								: "bg-gray-300 text-gray-700"
 						} py-2 px-4 rounded`}
 					>
-						Default
+						<IoDocumentOutline  />
 					</button>
 
 					<button
@@ -48,7 +52,7 @@ const NavBar: React.FC = () => {
 								: "bg-gray-300 text-gray-700"
 						} py-2 px-4 rounded`}
 					>
-						Descending
+						<AiOutlineDown />
 					</button>
 
 					<button
@@ -59,9 +63,9 @@ const NavBar: React.FC = () => {
 							expenseContext?.sortType === "ascending"
 								? "bg-blue-500 text-white"
 								: "bg-gray-300 text-gray-700"
-						} py-1 px-2 rounded`}
+						} py-2 px-4 rounded mr-20`}
 					>
-						Ascending
+						<AiOutlineUp />
 					</button>
 					<button onClick={context.logout}>
 						<HighLight>Sair</HighLight>
